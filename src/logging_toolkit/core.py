@@ -380,7 +380,7 @@ def get_logger(
 def setup_file_logging(
     logger_name: str,
     log_folder: str = "unknown/",
-    log_dir: str = "/dbfs/mnt/logs/",
+    log_dir: str = "./logs/",
     file_prefix: str = None,
     level: int = logging.DEBUG,
     console_level: int = logging.INFO,

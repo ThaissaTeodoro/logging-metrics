@@ -73,6 +73,7 @@ pip install -e ".[dev]"
 ## 🚀 Quick Start
 
 ```python
+import logging
 from logging_toolkit import setup_file_logging, LogTimer
 
 # Basic configuration
