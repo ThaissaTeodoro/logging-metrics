@@ -1,2 +1,4 @@
 dist/
 src/logging_toolkit.*
+test/
+.*
