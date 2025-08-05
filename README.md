@@ -99,7 +99,7 @@ with LogTimer(logger, "Critical operation"):
 
 1. Logging configuration:
     ```python
-    from logging_utils import setup_console_logging
+    from logging_toolkit import setup_console_logging
 
     logger = setup_console_logging("my_app", level=logging.INFO)
     logger.debug("Debug message")     # Gray
@@ -111,7 +111,7 @@ with LogTimer(logger, "Critical operation"):
 
 2. Automatic Log Rotation:
     ```python
-    from logging_utils import setup_file_logging
+    from logging_toolkit import setup_file_logging
 
     # Size-based rotation
     logger = setup_file_logging(
@@ -133,7 +133,7 @@ with LogTimer(logger, "Critical operation"):
 
 3. Spark/Databricks Integration:
     ```python
-    from logging_utils import setup_spark_logging
+    from logging_toolkit import setup_spark_logging
 
     # For Spark/Databricks environments
     logger = setup_spark_logging(
@@ -146,7 +146,7 @@ with LogTimer(logger, "Critical operation"):
 
 4. ⏱ Timing with LogTimer:
     ```python
-    from logging_utils import LogTimer
+    from logging_toolkit import LogTimer
 
     # As a context manager
     with LogTimer(logger, "DB query"):
@@ -166,7 +166,7 @@ with LogTimer(logger, "Critical operation"):
 
 5. 📈 Metrics Monitoring:
     ```python
-    from logging_utils import LogMetrics
+    from logging_toolkit import LogMetrics
 
     metrics = LogMetrics(logger)
 
@@ -214,7 +214,7 @@ with LogTimer(logger, "Critical operation"):
 
 7. 📊 JSON Format for Observability:
     ```python
-    from logging_utils import setup_json_logging
+    from logging_toolkit import setup_json_logging
 
     # JSON logs for integration with ELK, Grafana, etc.
     logger = setup_json_logging(
@@ -292,7 +292,7 @@ with LogTimer(logger, "Critical operation"):
 
 Example of full configuration:
 ```python
-from logging_utils import setup_file_logging, LogMetrics
+from logging_toolkit import setup_file_logging, LogMetrics
 import logging
 
 # Main configuration with all options
@@ -323,7 +323,7 @@ for module in modules:
 
 ```python
 import logging
-from logging_utils import setup_file_logging, LogTimer, LogMetrics
+from logging_toolkit import setup_file_logging, LogTimer, LogMetrics
 
 def main():
     # Initial configuration
@@ -420,12 +420,12 @@ tests/
 # Coverage report
 Name                        Stmts   Miss  Cover
 -----------------------------------------------
-src/logging_utils/__init__.py     12      0   100%
-src/logging_utils/console.py      45      2    96%
-src/logging_utils/file.py         78      3    96%
-src/logging_utils/spark.py        32      1    97%
-src/logging_utils/timer.py        56      2    96%
-src/logging_utils/metrics.py      89      4    96%
+src/logging_toolkit/__init__.py     12      0   100%
+src/logging_toolkit/console.py      45      2    96%
+src/logging_toolkit/file.py         78      3    96%
+src/logging_toolkit/spark.py        32      1    97%
+src/logging_toolkit/timer.py        56      2    96%
+src/logging_toolkit/metrics.py      89      4    96%
 -----------------------------------------------
 TOTAL                            312     12    96%
 
