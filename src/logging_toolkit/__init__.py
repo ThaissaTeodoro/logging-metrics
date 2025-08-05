@@ -2,7 +2,6 @@ from .core import (
     Colors,
     ColoredFormatter,
     JSONFormatter,
-    SparkLogHandler,
     create_file_handler,
     create_timed_file_handler,
     create_console_handler,
