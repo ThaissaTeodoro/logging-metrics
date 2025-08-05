@@ -99,9 +99,9 @@ with LogTimer(logger, "Critical operation"):
 
 1. Logging configuration:
     ```python
-    from logging_toolkit import setup_console_logging
-
-    logger = setup_console_logging("my_app", level=logging.INFO)
+    import logging
+    from logging_toolkit import configure_basic_logging
+    logger = configure_basic_logging()
     logger.debug("Debug message")     # Gray
     logger.info("Info")               # Green  
     logger.warning("Warning")         # Yellow
@@ -111,128 +111,155 @@ with LogTimer(logger, "Critical operation"):
 
 2. Automatic Log Rotation:
     ```python
-    from logging_toolkit import setup_file_logging
-
+    from logging_toolkit import setup_file_logging, LogTimer
     # Size-based rotation
     logger = setup_file_logging(
         logger_name="app",
         log_dir="./logs",
         max_bytes=10*1024*1024,  # 10MB
-        backup_count=5
+        rotation='size'
     )
-
+    
     # Time-based rotation
     logger = setup_file_logging(
         logger_name="app", 
         log_dir="./logs",
-        when="midnight",     # Daily at midnight
-        interval=1,
-        backup_count=30      # Keep 30 days
+        rotation='time'    
     )
     ```
 
 3. Spark/Databricks Integration:
     ```python
-    from logging_toolkit import setup_spark_logging
-
-    # For Spark/Databricks environments
-    logger = setup_spark_logging(
-        logger_name="spark_app"
-    )
-
+    from pyspark.sql import SparkSession
+    from logging_toolkit import configure_basic_logging, log_spark_dataframe_info
+    
+    spark = SparkSession.builder.getOrCreate()
+    df = spark.createDataFrame([(1, "Ana"), (2, "Bruno")], ["id", "nome"])
+    
+    logger = configure_basic_logging()
+    print("Logger:", logger)
+    
+    log_spark_dataframe_info(
+        df = df,logger = logger, name ="spark_app")
+    
     logger.info("Spark processing started")
-    # Logs will appear correctly on the Spark driver
     ```
 
 4. ⏱ Timing with LogTimer:
     ```python
-    from logging_toolkit import LogTimer
+    from logging_toolkit import LogTimer, configure_basic_logging
 
+    logger = configure_basic_logging()
     # As a context manager
     with LogTimer(logger, "DB query"):
-        result = run_query()
-
+        logger.info("Test")
+    
     # As a decorator
-    @LogTimer.decorator(logger, "Data processing")
+    @LogTimer.as_decorator(logger, "Data processing")
     def process_data(data):
         return data.transform()
-
-    # Manual usage
-    timer = LogTimer(logger, "Manual operation")
-    timer.start()
-    # ... code ...
-    timer.stop()  # Logs the elapsed time automatically
-    ```
+        ```
 
 5. 📈 Metrics Monitoring:
     ```python
-    from logging_toolkit import LogMetrics
-
+   from logging_toolkit import LogMetrics, configure_basic_logging
+    import time
+    
+    logger = configure_basic_logging()
+    
     metrics = LogMetrics(logger)
-
+    
+    items = [10, 5, 80, 60, 'test1', 'test2']
+    
     # Start timer for total operation
     metrics.start('total_processing')
-
+    
+    
     for item in items:
-        # Increment counters
+        # Increments the processed records counter
         metrics.increment('records_processed')
-        
-        if item.has_error:
-            metrics.increment('errors_found')
-        
-        # Measure individual operations
-        with metrics.timer('item_processing'):
-            process_item(item)
 
+        # If it is an error (simulation)
+        if isinstance(item, str):
+            metrics.increment('errors')
+    
+        # Simulates item processing
+        time.sleep(0.1)
+    
+        # Custom value example
+        metrics.set('last_item', item)
+    
+    
     # Finalize and log all metrics
-    metrics.stop('total_processing')
+    elapsed = metrics.stop('total_processing')
+    
+    # Logs all collected metrics
     metrics.log_all()
-
+    
     # Output:
-    # Collected metrics:
-    # - total_processing: 2.34s
-    # - records_processed: 1000
-    # - errors_found: 3
-    # - item_processing (avg): 0.002s
+    # --- Processing Metrics ---
+    # Counters:
+    #   - records_processed: 6
+    #   - errors_found: 2
+    #  Values:
+    #   - last_item: test2
+    #  Completed timers:
+    #   - total_processing: 0.60 seconds
     ```
 
 6. Hierarchical Configuration:
     ```python
+   from logging_toolkit import setup_file_logging
+    import logging
+    
     # Main logger
     main_logger = setup_file_logging("my_app", log_dir="./logs")
-
+    
     # Sub-loggers organized hierarchically
     db_logger = logging.getLogger("my_app.database")
     api_logger = logging.getLogger("my_app.api")
     auth_logger = logging.getLogger("my_app.auth")
-
+    
     # Module-specific configuration
     db_logger.setLevel(logging.DEBUG)      # More verbose for DB
     api_logger.setLevel(logging.INFO)      # Normal for API
     auth_logger.setLevel(logging.WARNING)  # Only warnings/errors for auth
+    
+    db_logger.debug("querying the database")
+    db_logger.info("consultation successfully completed")
+    db_logger.error("Error connecting to database!")
+    
+    auth_logger.debug("doing authentication")
+    auth_logger.info("authentication successfully completed")
+    api_logger.debug("querying the api")
+    api_logger.info("consultation successfully completed")
+    api_logger.error("Error querying the api")
+    auth_logger.error("Auth error!")
     ```
 
 7. 📊 JSON Format for Observability:
     ```python
-    from logging_toolkit import setup_json_logging
-
+    from logging_toolkit import setup_file_logging
+    
     # JSON logs for integration with ELK, Grafana, etc.
-    logger = setup_json_logging(
+    logger = setup_file_logging(
         logger_name="microservice",
         log_dir="./logs",
-        extra_fields={"service": "user-api", "version": "1.2.0"}
+        json_format = True
     )
-
+    
     logger.info("User logged in", extra={"user_id": 12345, "action": "login"})
-
+    
     # Example JSON output:
     # {
     #   "timestamp": "2024-08-05T10:30:00.123Z",
     #   "level": "INFO", 
-    #   "logger": "microservice",
+    #   "name": "microservice",
     #   "message": "User logged in",
-    #   "service": "user-api",
-    #   "version": "1.2.0",
+    #   "module": "user-api",
+    #   "function": "<module>",
+    #   "line": 160,
+    #   "taskName": null,
     #   "user_id": 12345,
     #   "action": "login"
     # }
@@ -298,16 +325,16 @@ import logging
 # Main configuration with all options
 logger = setup_file_logging(
     logger_name="my_app",
+    log_folder: str = "unknown/"
     log_dir="./logs",
     level=logging.DEBUG,
     console_level=logging.INFO,
-    format_string="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    rotation='time',
+    log_format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     date_format="%Y-%m-%d %H:%M:%S",
     max_bytes=50*1024*1024,  # 50MB
     backup_count=10,
-    encoding='utf-8',
-    when="midnight",
-    interval=1
+    add_console= True
 )
 
 # Sub-module configuration
@@ -388,35 +415,31 @@ pip install -e ".[dev]"
 make test
 
 # Tests with coverage
-make test-coverage
+make test-cov
 
 # Specific tests
-pytest tests/test_file_logging.py -v
-pytest tests/test_timer.py::TestLogTimer::test_context_manager -v
+pytest test/test_file_logging.py -v
 
 # Tests with different verbosity levels
-pytest tests/ -v                     # Verbose
-pytest tests/ -s                     # No output capture
-pytest tests/ --tb=short             # Short traceback
+pytest test/ -v                     # Verbose
+pytest test/ -s                     # No output capture
+pytest test/ --tb=short             # Short traceback
 ```
 
 #### Test Structure
-
-tests/
-├── __init__.py
-├── conftest.py                    # Shared fixtures
-├── test_console_logging.py        # Colored log tests
-├── test_file_logging.py           # File log tests
-├── test_spark_logging.py          # Spark integration tests
-├── test_json_logging.py           # JSON format tests
-├── test_timer.py                  # LogTimer tests
-├── test_metrics.py                # LogMetrics tests
-└── integration/                   # Integration tests
-    ├── test_spark_integration.py
-    └── test_full_pipeline.py
+```
+test/
+├── conftest.py                  # Shared pytest fixtures and test configurations        
+├── Makefile                     # Automation commands for testing, linting, and build tasks
+├── pytest.ini                   # Global pytest configuration settings
+├── run_tests.py                 # Script to run all tests automatically
+├── test-requirements.txt        # Development and test dependencies
+├── TEST_GUIDE.md                # Quick guide: how to run and interpret tests
+└── test_logging_toolkit.py      # Automated tests for the logging_toolkit library
+```
 
 #### Current coverage
-
+```
 # Coverage report
 Name                        Stmts   Miss  Cover
 -----------------------------------------------
@@ -428,10 +451,13 @@ src/logging_toolkit/timer.py        56      2    96%
 src/logging_toolkit/metrics.py      89      4    96%
 -----------------------------------------------
 TOTAL                            312     12    96%
+```
 
 #### Running tests in different environments
 ```bash
 # Test in multiple Python versions with tox
+pip install tox
+
 tox
 
 # Specific configurations
@@ -484,13 +510,13 @@ Python: >= 3.8
 Dependencies:
 
 - pytz (for timezone handling)
-- colorama (for colors on Windows)
+- pyspark
 
 ---
 
 ## 📝 Changelog
 
-v1.0.0 (Current)
+v0.1.2 (Current)
 - Initial stable version
 - LogTimer and LogMetrics
 - Spark integration
