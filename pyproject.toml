@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logging-toolkit"
+version = "0.1.0"
+description = "Advanced logging utilities for robust, standardized logs in Python projects, APIs, data engineering, and more."
+
+authors = [
+  {name = "Thaissa Ferreira", email = "thaissa.teodoro@hotmail.com"}
+]
+
+dependencies = [
+  "pyspark>=3.0.0",
+  "pytz"
+]
+
+requires-python = ">=3.8"
+readme = "README.md"
+license = "MIT"
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov"
+]

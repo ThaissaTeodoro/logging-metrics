@@ -1,2 +1,516 @@
-# logging-toolkit
-Advanced logging utilities for robust, standardized logs in Python projects, APIs, data engineering, and more.
+
+# logging_toolkit - Utilities Library for Logging Configuration and Management
+
+This module provides functions and classes to configure logging for different environments and use cases:
+
+- Colored logs for the terminal
+- Rotating log files (by time or size)
+- Customizable settings for different verbosity levels
+- Text or JSON formatters compatible with external analysis tools
+- Utilities for timing operations and collecting custom metrics
+- **Utility functions for logging PySpark DataFrames** (e.g., row count, schema, samples, and basic statistics)
+
+Main Components:
+----------------
+- `ColoredFormatter`: Colorized terminal output for quick identification of log levels
+- `JSONFormatter`: JSON-formatted logs for external tool integration
+- Functions to create handlers (console, file, rotation by time or size)
+- `LogTimer`: Measure execution time of code blocks (context manager or decorator)
+- `LogMetrics`: Collect and log custom metrics (counters, timers, values)
+- **`log_spark_dataframe_info`: Easy, structured logging for PySpark DataFrames**
+
+This toolkit is recommended for data pipelines, ETLs, and projects where traceability, auditability, and log performance are critical requirements.
+
+---
+
+This README.md covers:
+
+- Purpose
+- Installation
+- Main Features
+- Best Practices
+- Usage Example
+- Spark Integration
+- Dependencies & License
+
+---
+
+# Logging-Toolkit
+
+A library for configuring and managing logs in Python, focused on simplicity and performance.
+
+---
+
+#### ✨ Features
+
+- 🎨 Colored logs for the terminal with different levels
+- 📁 Automatic file rotation by time or size
+- ⚡ PySpark DataFrame integration
+- 📊 JSON format for observability systems
+- ⏱️ Timing with LogTimer
+- 📈 Metrics monitoring with LogMetrics
+- 🔧 Hierarchical logger configuration
+- 🚀 Optimized performance for critical applications
+
+---
+
+## 📦 Installation
+
+#### Install via pip:
+```bash
+pip install logging-toolkit 
+```
+
+#### For development:
+```bash
+git clone https://github.com/thaissateodoro/logging-toolkit.git
+cd logging-toolkit
+pip install -e ".[dev]"
+```
+
+---
+
+## 🚀 Quick Start
+
+```python
+from logging_toolkit import setup_file_logging, LogTimer
+
+# Basic configuration
+logger = setup_file_logging(
+    logger_name="my_app",
+    log_dir="./logs",
+    console_level=logging.INFO,  # Less verbose in console
+    level=logging.DEBUG          # More detailed in the file
+)
+
+# Simple usage
+logger.info("Application started!")
+
+# Timing operations
+with LogTimer(logger, "Critical operation"):
+    # your code here
+    pass
+```
+
+---
+
+## 📖 Main Features
+
+1. Logging configuration:
+    ```python
+    from logging_utils import setup_console_logging
+
+    logger = setup_console_logging("my_app", level=logging.INFO)
+    logger.debug("Debug message")     # Gray
+    logger.info("Info")               # Green  
+    logger.warning("Warning")         # Yellow
+    logger.error("Error")             # Red
+    logger.critical("Critical")       # Bold red
+    ```
+
+2. Automatic Log Rotation:
+    ```python
+    from logging_utils import setup_file_logging
+
+    # Size-based rotation
+    logger = setup_file_logging(
+        logger_name="app",
+        log_dir="./logs",
+        max_bytes=10*1024*1024,  # 10MB
+        backup_count=5
+    )
+
+    # Time-based rotation
+    logger = setup_file_logging(
+        logger_name="app", 
+        log_dir="./logs",
+        when="midnight",     # Daily at midnight
+        interval=1,
+        backup_count=30      # Keep 30 days
+    )
+    ```
+
+3. Spark/Databricks Integration:
+    ```python
+    from logging_utils import setup_spark_logging
+
+    # For Spark/Databricks environments
+    logger = setup_spark_logging(
+        logger_name="spark_app"
+    )
+
+    logger.info("Spark processing started")
+    # Logs will appear correctly on the Spark driver
+    ```
+
+4. ⏱ Timing with LogTimer:
+    ```python
+    from logging_utils import LogTimer
+
+    # As a context manager
+    with LogTimer(logger, "DB query"):
+        result = run_query()
+
+    # As a decorator
+    @LogTimer.decorator(logger, "Data processing")
+    def process_data(data):
+        return data.transform()
+
+    # Manual usage
+    timer = LogTimer(logger, "Manual operation")
+    timer.start()
+    # ... code ...
+    timer.stop()  # Logs the elapsed time automatically
+    ```
+
+5. 📈 Metrics Monitoring:
+    ```python
+    from logging_utils import LogMetrics
+
+    metrics = LogMetrics(logger)
+
+    # Start timer for total operation
+    metrics.start('total_processing')
+
+    for item in items:
+        # Increment counters
+        metrics.increment('records_processed')
+        
+        if item.has_error:
+            metrics.increment('errors_found')
+        
+        # Measure individual operations
+        with metrics.timer('item_processing'):
+            process_item(item)
+
+    # Finalize and log all metrics
+    metrics.stop('total_processing')
+    metrics.log_all()
+
+    # Output:
+    # Collected metrics:
+    # - total_processing: 2.34s
+    # - records_processed: 1000
+    # - errors_found: 3
+    # - item_processing (avg): 0.002s
+    ```
+
+6. Hierarchical Configuration:
+    ```python
+    # Main logger
+    main_logger = setup_file_logging("my_app", log_dir="./logs")
+
+    # Sub-loggers organized hierarchically
+    db_logger = logging.getLogger("my_app.database")
+    api_logger = logging.getLogger("my_app.api")
+    auth_logger = logging.getLogger("my_app.auth")
+
+    # Module-specific configuration
+    db_logger.setLevel(logging.DEBUG)      # More verbose for DB
+    api_logger.setLevel(logging.INFO)      # Normal for API
+    auth_logger.setLevel(logging.WARNING)  # Only warnings/errors for auth
+    ```
+
+7. 📊 JSON Format for Observability:
+    ```python
+    from logging_utils import setup_json_logging
+
+    # JSON logs for integration with ELK, Grafana, etc.
+    logger = setup_json_logging(
+        logger_name="microservice",
+        log_dir="./logs",
+        extra_fields={"service": "user-api", "version": "1.2.0"}
+    )
+
+    logger.info("User logged in", extra={"user_id": 12345, "action": "login"})
+
+    # Example JSON output:
+    # {
+    #   "timestamp": "2024-08-05T10:30:00.123Z",
+    #   "level": "INFO", 
+    #   "logger": "microservice",
+    #   "message": "User logged in",
+    #   "service": "user-api",
+    #   "version": "1.2.0",
+    #   "user_id": 12345,
+    #   "action": "login"
+    # }
+    ```
+
+---
+
+## 🏆 Best Practices
+
+1. Configure logging once at the start:
+    ```python
+    # In main.py or __init__.py
+    logger = setup_file_logging("my_app", log_dir="./logs")
+    ```
+
+2. Use logger hierarchy:
+    ```python
+    # Organize by modules/features
+    db_logger = logging.getLogger("app.database")
+    api_logger = logging.getLogger("app.api")
+    ```
+
+3. Different levels for console and file:
+    ```python
+    logger = setup_file_logging(
+        console_level=logging.WARNING,  # Less verbose in console
+        level=logging.DEBUG             # More detailed in the file
+    )
+    ```
+
+4. Use LogTimer for critical operations:
+    ```python
+    with LogTimer(logger, "Complex query"):
+        result = run_heavy_query()
+    ```
+
+5. Monitor metrics in long processes:
+    ```python
+    metrics = LogMetrics(logger)
+    for batch in batches:
+        with metrics.timer('batch_processing'):
+            process_batch(batch)
+    ```
+
+---
+
+## ❌ Avoid
+- Configuring loggers multiple times
+- Using print() instead of logger
+- Excessive logging in critical loops
+- Exposing sensitive information in logs
+- Ignoring log file rotation
+
+---
+
+## 🔧 Advanced Configuration
+
+Example of full configuration:
+```python
+from logging_utils import setup_file_logging, LogMetrics
+import logging
+
+# Main configuration with all options
+logger = setup_file_logging(
+    logger_name="my_app",
+    log_dir="./logs",
+    level=logging.DEBUG,
+    console_level=logging.INFO,
+    format_string="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    date_format="%Y-%m-%d %H:%M:%S",
+    max_bytes=50*1024*1024,  # 50MB
+    backup_count=10,
+    encoding='utf-8',
+    when="midnight",
+    interval=1
+)
+
+# Sub-module configuration
+modules = ['database', 'api', 'auth', 'cache']
+for module in modules:
+    module_logger = logging.getLogger(f"my_app.{module}")
+    module_logger.setLevel(logging.INFO)
+```
+
+---
+
+## 🧪 Complete Example
+
+```python
+import logging
+from logging_utils import setup_file_logging, LogTimer, LogMetrics
+
+def main():
+    # Initial configuration
+    logger = setup_file_logging(
+        logger_name="data_processor",
+        log_dir="./logs",
+        console_level=logging.INFO,
+        level=logging.DEBUG
+    )
+    
+    # Sub-loggers
+    db_logger = logging.getLogger("data_processor.database")
+    api_logger = logging.getLogger("data_processor.api")
+    
+    # Metrics
+    metrics = LogMetrics(logger)
+    
+    logger.info("Application started")
+    
+    try:
+        # Main processing with timing
+        with LogTimer(logger, "Full processing"):
+            metrics.start('total_processing')
+            
+            # Simulate processing
+            for i in range(1000):
+                metrics.increment('records_processed')
+                
+                if i % 100 == 0:
+                    logger.info(f"Processed {i} records")
+                
+                # Simulate occasional error
+                if i % 250 == 0:
+                    metrics.increment('errors_recovered')
+                    logger.warning(f"Recovered error at record {i}")
+            
+            metrics.stop('total_processing')
+            metrics.log_all()
+            
+        logger.info("Processing successfully completed")
+        
+    except Exception as e:
+        logger.error(f"Error during processing: {e}", exc_info=True)
+        raise
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## 🧪 Tests
+
+The library has a complete test suite to ensure quality and reliability.
+
+#### Running the tests:
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run all tests
+make test
+
+# Tests with coverage
+make test-coverage
+
+# Specific tests
+pytest tests/test_file_logging.py -v
+pytest tests/test_timer.py::TestLogTimer::test_context_manager -v
+
+# Tests with different verbosity levels
+pytest tests/ -v                     # Verbose
+pytest tests/ -s                     # No output capture
+pytest tests/ --tb=short             # Short traceback
+```
+
+#### Test Structure
+
+tests/
+├── __init__.py
+├── conftest.py                    # Shared fixtures
+├── test_console_logging.py        # Colored log tests
+├── test_file_logging.py           # File log tests
+├── test_spark_logging.py          # Spark integration tests
+├── test_json_logging.py           # JSON format tests
+├── test_timer.py                  # LogTimer tests
+├── test_metrics.py                # LogMetrics tests
+└── integration/                   # Integration tests
+    ├── test_spark_integration.py
+    └── test_full_pipeline.py
+
+#### Current coverage
+
+# Coverage report
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+src/logging_utils/__init__.py     12      0   100%
+src/logging_utils/console.py      45      2    96%
+src/logging_utils/file.py         78      3    96%
+src/logging_utils/spark.py        32      1    97%
+src/logging_utils/timer.py        56      2    96%
+src/logging_utils/metrics.py      89      4    96%
+-----------------------------------------------
+TOTAL                            312     12    96%
+
+#### Running tests in different environments
+```bash
+# Test in multiple Python versions with tox
+tox
+
+# Specific configurations
+tox -e py38                # Python 3.8
+tox -e py39                # Python 3.9  
+tox -e py310               # Python 3.10
+tox -e py311               # Python 3.11
+tox -e py312               # Python 3.12
+tox -e lint                # Only linting
+tox -e coverage            # Only coverage
+```
+
+#### Running tests in CI/CD
+Tests are run automatically in:
+
+---
+
+## 📋 API Reference
+
+Main Functions
+
+| Functions                | Description                                    | Main Parameters                         |
+|--------------------------|------------------------------------------------|-----------------------------------------|
+| setup_file_logging()     | Configures logs for file and console           | logger_name, log_dir, level, console_level |
+| setup_console_logging()  | Configures colored logs for console only       | logger_name, level, colors              |
+| setup_spark_logging()    | Configures logs for Spark environments         | logger_name, level                      |
+| setup_json_logging()     | Configures logs in JSON format                 | logger_name, log_dir, extra_fields      |
+
+---
+
+## Utility Classes
+
+#### LogTimer
+- Context manager: with LogTimer(logger, "operation"):
+- Decorator: @LogTimer.decorator(logger, "function")
+- Manual: timer.start() / timer.stop()
+
+#### LogMetrics
+- Counters: metrics.increment('counter')
+- Timers: metrics.start('timer') / metrics.stop('timer')
+- Context manager: with metrics.timer('operation'):
+- Report: metrics.log_all()
+
+---
+
+## 🔧 Requirements
+
+Python: >= 3.8
+
+Dependencies:
+
+- pytz (for timezone handling)
+- colorama (for colors on Windows)
+
+---
+
+## 📝 Changelog
+
+v1.0.0 (Current)
+- Initial stable version
+- LogTimer and LogMetrics
+- Spark integration
+- Colored logs
+- JSON log support
+- Fixed file rotation bug on Windows
+- Expanded documentation with more examples
+
+---
+
+## 🤝 Contributing
+
+#### Contributions are welcome!
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/logging-toolkit`)
+3. Commit your changes (`git commit -m 'Add logging-toolkit'`)
+4. Push to the branch (`git push origin feature/logging-toolkit`)
+5. Open a Pull Request
+
+---
+
+## License
+
+MIT License. See LICENSE for details.
