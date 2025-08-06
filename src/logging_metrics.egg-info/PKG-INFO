@@ -1,3 +1,24 @@
+Metadata-Version: 2.4
+Name: logging-metrics
+Version: 0.1.0
+Summary: Advanced logging utilities for robust, standardized logs in Python projects, APIs, data engineering, and more.
+Author-email: Thaissa Ferreira <thaissa.teodoro@hotmail.com>
+License-Expression: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyspark>=3.0.0
+Requires-Dist: pytz
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Dynamic: license-file
+
 
 # logging-metrics - Utilities Library for Logging Configuration and Management
 

@@ -1,0 +1,6 @@
+pyspark>=3.0.0
+pytz
+
+[dev]
+pytest
+pytest-cov

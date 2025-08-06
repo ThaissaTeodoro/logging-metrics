@@ -1,4 +1,4 @@
-# Changelog - logging-toolkit
+# Changelog - logging-metrics
 
 All significant changes to this project will be documented in this file.
 
@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.0] - 2025-07-28
 ### Added
-- First release of the `logging-toolkit` library.
+- First release of the `logging-metrics` library.
 - Logging configuration support:
   - Colored logs in the console.
   - Log files with rotation by time or size.

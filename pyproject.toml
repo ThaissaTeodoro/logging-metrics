@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "logging-toolkit"
-version = "0.1.3"
+name = "logging-metrics"
+version = "0.1.0"
 description = "Advanced logging utilities for robust, standardized logs in Python projects, APIs, data engineering, and more."
 
 authors = [
