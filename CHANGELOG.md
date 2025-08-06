@@ -18,9 +18,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `LogTimer` to measure execution time of operations.
   - `LogMetrics` for process metrics and counters.
 - Basic usage and configuration example in the README.
+
+### ✅ Testing & Coverage
+- Initial test suite covering main functionalities
+- Automated tests with pytest and coverage integration
+
+### 📖 Documentation
+- Complete README documentation including installation, usage examples, best practices, and contribution guidelines
 ---
 
 ## [0.1.1] - 2025-08-06
+### Added
+- Adjustment in the README.
+- New dependencies for dev.
+----
+
+## [0.1.2] - 2025-08-06
 ### Added
 - Adjustment in the README.
 - New dependencies for dev.
