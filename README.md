@@ -30,7 +30,7 @@ This README.md covers:
 - Main Features
 - Best Practices
 - Usage Example
-- Spark Integration
+- Pyspark dataframe integration
 - Dependencies & License
 
 ---
