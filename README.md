@@ -69,6 +69,34 @@ pip install -e ".[dev]"
 ```
 
 ---
+## 📋 Functions and Classes Overview
+
+Main Functions
+```
+| Name                      | Type     | Description                                                                          |
+|---------------------------|----------|--------------------------------------------------------------------------------------|
+| `configure_basic_logging` | Function | Configures root logger for colored console logging.                                  |
+| `setup_file_logging`      | Function | Configures a logger with file output (rotation), optional console, JSON formatting.  |
+| `LogTimer`                | Class    | Context manager and decorator to log execution time of code blocks or functions.     |
+| `log_spark_dataframe_info`| Function | Logs schema, sample, stats of a PySpark DataFrame (row count, sample, stats, etc).   |
+| `LogMetrics`              | Class    | Utility for collecting, incrementing, timing, and logging custom processing metrics. |
+| `get_logger`              | Function | Returns a logger with custom handlers and caplog-friendly mode for pytest.           |
+```
+---
+
+### Utility Classes
+#### LogTimer
+- Context manager: with LogTimer(logger, "operation"):
+- Decorator: @LogTimer.decorator(logger, "function")
+- Manual: timer.start() / timer.stop()
+
+#### LogMetrics
+- Counters: metrics.increment('counter')
+- Timers: metrics.start('timer') / metrics.stop('timer')
+- Context manager: with metrics.timer('operation'):
+- Report: metrics.log_all()
+
+---
 
 ## 🚀 Quick Start
 
@@ -475,33 +503,6 @@ Tests are run automatically in:
 
 ---
 
-## 📋 API Reference
-
-Main Functions
-
-| Functions                | Description                                    | Main Parameters                         |
-|--------------------------|------------------------------------------------|-----------------------------------------|
-| setup_file_logging()     | Configures logs for file and console           | logger_name, log_dir, level, console_level |
-| setup_console_logging()  | Configures colored logs for console only       | logger_name, level, colors              |
-| setup_spark_logging()    | Configures logs for Spark environments         | logger_name, level                      |
-| setup_json_logging()     | Configures logs in JSON format                 | logger_name, log_dir, extra_fields      |
-
----
-
-## Utility Classes
-
-#### LogTimer
-- Context manager: with LogTimer(logger, "operation"):
-- Decorator: @LogTimer.decorator(logger, "function")
-- Manual: timer.start() / timer.stop()
-
-#### LogMetrics
-- Counters: metrics.increment('counter')
-- Timers: metrics.start('timer') / metrics.stop('timer')
-- Context manager: with metrics.timer('operation'):
-- Report: metrics.log_all()
-
----
 
 ## 🔧 Requirements
 
