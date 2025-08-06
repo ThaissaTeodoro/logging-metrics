@@ -6,7 +6,7 @@ The format follows the guidelines from [Keep a Changelog](https://keepachangelog
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ---
 
-## [0.1.0] - 2025-07-28
+## [0.1.0] - 2025-08-05
 ### Added
 - First release of the `logging-metrics` library.
 - Logging configuration support:
@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `LogMetrics` for process metrics and counters.
 - Basic usage and configuration example in the README.
 ---
+
+## [0.1.1] - 2025-08-06
+### Added
+- Adjustment in the README.
+- New dependencies for dev.
+----
 
 ## History
 - Project started in 2025.

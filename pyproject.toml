@@ -20,6 +20,8 @@ requires-python = ">=3.8"
 readme = "README.md"
 license = "MIT"
 
+keywords = ["logging", "metrics", "python", "spark", "instrumentation"]
+
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
@@ -30,8 +32,19 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = [
-  "pytest",
-  "pytest-cov",
-  "black",
-  "flake8"
+  pytest>=7.0.0,
+  pytest-cov>=4.0.0,
+  pytest-xdist>=3.0.0,
+  pytest-mock>=3.10.0,
+  pyspark>=3.3.0,
+  py4j>=0.10.9,
+  coverage>=6.0.0,
+  faker>=18.0.0,
+  hypothesis>=6.0.0,
+  black>=22.0.0,
+  flake8>=5.0.0
 ]
+
+[project.urls]
+Repository = "https://github.com/ThaissaTeodoro/logging-metrics"
+Changelog = "https://https://github.com/ThaissaTeodoro/logging-metrics/blob/main/CHANGELOG.md"
