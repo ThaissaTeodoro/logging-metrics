@@ -17,7 +17,7 @@ Main Components:
 - Functions to create handlers (console, file, rotation by time or size)
 - `LogTimer`: Measure execution time of code blocks (context manager or decorator)
 - `LogMetrics`: Collect and log custom metrics (counters, timers, values)
-- **`log_spark_dataframe_info`: Easy, structured logging for PySpark DataFrames**
+- `log_spark_dataframe_info`: Easy, structured logging for PySpark DataFrames
 
 This toolkit is recommended for data pipelines, ETLs, and projects where traceability, auditability, and log performance are critical requirements.
 
@@ -35,7 +35,7 @@ This README.md covers:
 
 ---
 
-# Logging-Toolkit
+# logging-metrics
 
 A library for configuring and managing logs in Python, focused on simplicity and performance.
 
@@ -58,13 +58,13 @@ A library for configuring and managing logs in Python, focused on simplicity and
 
 #### Install via pip:
 ```bash
-pip install logging-toolkit 
+pip install logging-metrics 
 ```
 
 #### For development:
 ```bash
-git clone https://github.com/thaissateodoro/logging-toolkit.git
-cd logging-toolkit
+git clone https://github.com/thaissateodoro/logging-metrics.git
+cd logging-metrics
 pip install -e ".[dev]"
 ```
 
@@ -532,9 +532,9 @@ v0.1.2 (Current)
 
 #### Contributions are welcome!
 1. Fork the project
-2. Create your feature branch (`git checkout -b feature/logging-toolkit`)
-3. Commit your changes (`git commit -m 'Add logging-toolkit'`)
-4. Push to the branch (`git push origin feature/logging-toolkit`)
+2. Create your feature branch (`git checkout -b feature/logging-metrics`)
+3. Commit your changes (`git commit -m 'Add logging-metrics'`)
+4. Push to the branch (`git push origin feature/logging-metrics`)
 5. Open a Pull Request
 
 ---
