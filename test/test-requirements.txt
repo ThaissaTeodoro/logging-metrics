@@ -14,8 +14,8 @@ py4j>=0.10.9
 coverage>=6.0.0
 
 # Testing Utilities
-faker>=18.0.0  # Para geração de dados fake
-hypothesis>=6.0.0  # Para property-based testing
+faker>=18.0.0  # For generating fake data
+hypothesis>=6.0.0  # For property-based testing
 
 # Formatting and linting (optional)
 black>=22.0.0
