@@ -30,7 +30,7 @@ test:
 
 test-cov:
 	@echo "$(BLUE)Running tests with coverage...$(NC)"
-	$(PYTEST) $(TESTS) -v --cov=$(PKG) --cov-report=xml --cov-report=html --cov-report=term-missing
+	PYTHONPATH=src $(PYTEST) $(TESTS) -v --cov=$(PKG) --cov-report=xml --cov-report=html --cov-report=term-missing
 	@echo "$(GREEN)Coverage report available at htmlcov/index.html$(NC)"
 
 test-parallel:
