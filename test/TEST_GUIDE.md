@@ -2,20 +2,22 @@
 
 This guide explains how to run, configure, and interpret automated tests for the `logging_toolkit` library.
 
+---
+
 ## 📁 File Structure
 
 ```
 logging_toolkit/
-├── logging_toolkit.py                  # Main library
-├── test_logging_toolkit.py             # Unit & integration tests (functions, classes, edge cases)
-├── test_logging_toolkit_performance.py # Performance/massive logs tests (optional)
-├── conftest.py                         # Pytest configuration (fixtures, loggers, env)
-├── pytest.ini                          # Pytest config (markers, logs, warnings)
-├── test-requirements.txt               # Test dependencies
-├── run_tests.py                        # Python script for test execution
-├── Makefile                            # Automated commands (lint, test, coverage, etc.)
-└── TEST_GUIDE.md                       # (This file)
+├── logging_toolkit.py          # Main library
+├── test_logging_toolkit.py     # Unit & integration tests (functions, classes, edge cases)
+├── conftest.py                 # Pytest configuration (fixtures, temp dirs, mocks)
+├── pytest.ini                  # Pytest config (markers, logs, warnings)
+├── test-requirements.txt       # Test dependencies
+├── Makefile                    # Automated commands (lint, test, coverage, etc.)
+└── TEST_GUIDE.md               # (This file)
 ```
+
+---
 
 ## 🚀 Quick Start
 
@@ -23,20 +25,11 @@ logging_toolkit/
 ```bash
 make install         # Install dependencies
 make test            # Run all tests
-make test-cov        # Run tests with code coverage
+make test-cov        # Run tests with coverage report
 make test-parallel   # Run tests in parallel
 ```
 
-### Option 2: Using the Python Script
-```bash
-# Install dependencies and run tests with coverage
-python run_tests.py --install-deps --coverage
-
-# Run only fast tests
-python run_tests.py --markers "not slow"
-```
-
-### Option 3: Using pytest Directly
+### Option 2: Using pytest directly
 ```bash
 # Install dependencies
 pip install -r test-requirements.txt
@@ -48,46 +41,60 @@ pytest test_logging_toolkit.py -v
 pytest test_logging_toolkit.py --cov=logging_toolkit --cov-report=html -v
 ```
 
+---
+
 ## 📊 Types of Tests
 
 ### 1. Unit Tests
-Test individual functions and classes in isolation:
+Isolated tests for each function and class:
 ```bash
-# Run only unit tests
-make test-unit
-# or
 pytest -m "unit" -v
 ```
 **Coverage includes:**
-- ✅ Formatters (ColoredFormatter, JSONFormatter)
-- ✅ Handlers (file, console, rotation)
-- ✅ get_logger, configure_basic_logging
-- ✅ LogTimer, LogMetrics
-- ✅ DataFrame logging (with mocks)
+- ✅ `ColoredFormatter` (with and without colors)
+- ✅ `JSONFormatter` (normal and with exceptions)
+- ✅ File and timed rotation handlers
+- ✅ Console handler creation
+- ✅ `configure_basic_logging` + `get_logger` variations
+- ✅ `LogTimer` as context manager and decorator
+- ✅ `LogMetrics` (increment, set, timers, log_all)
+- ✅ `_make_timezone_converter`
+
+---
 
 ### 2. Integration Tests
-End-to-end flows: logging configuration + real instrumentation.
+End-to-end flows using multiple components together:
 ```bash
-# Run only integration tests
-make test-integration
-# or
 pytest -m "integration" -v
 ```
 **Examples:**
-- Log rotation by time/size
-- Simultaneous logging to console and file
-- Instrumentation of real functions and DataFrames
+- File + console logging with JSON output
+- Log rotation by size and time
+- Spark DataFrame logging (`log_spark_dataframe_info`)
+- Custom handler injection into `get_logger`
+
+---
+
+### 3. Spark Tests
+Tests that require PySpark:
+```bash
+pytest -m spark
+```
+- Logging schema, sample, and stats from Spark DataFrames
+- Handling `None` DataFrame input gracefully
+
+---
 
 ## 🏷️ Markers
 
-Tests use markers for categorization:
+| Marker       | Description                         |
+|--------------|-------------------------------------|
+| `unit`       | Unit tests                          |
+| `integration`| Integration tests                   |
+| `spark`      | Tests involving PySpark             |
+| `slow`       | Long-running tests (>5s)            |
 
-| Marker       | Description                        | Example Usage         |
-|--------------|------------------------------------|----------------------|
-| `unit`       | Unit tests                         | `pytest -m unit`     |
-| `integration`| Integration tests                  | `pytest -m integration`|
-| `slow`       | Long-running tests (>5s)           | `pytest -m "not slow"`|
-| `spark`      | Tests involving PySpark            | `pytest -m spark`    |
+---
 
 ## 📈 Coverage Reports
 
@@ -99,96 +106,103 @@ make test-cov
 
 ### Coverage Targets
 - **Current goal:** 90%+
-- **Minimum acceptable:** 80%
+- **Minimum acceptable:** 85%
 - **Files covered:** `logging_toolkit.py`
+
+---
 
 ## 🔧 Specific Test Scenarios
 
-### Edge Case Tests
-```bash
-# Test behavior with problematic data
-pytest test_logging_toolkit.py::TestEdgeCases -v
-```
-**Cases covered:**
-- Loggers without handlers
-- Duplicate loggers
-- LogTimer/LogMetrics raising exceptions
-- Logging in terminal-less environments (CI)
-
 ### Formatter Tests
 ```bash
-# Test type conversions and formatting
-pytest test_logging_toolkit.py::TestFormatters -v
+pytest test_logging_toolkit.py::test_colored_formatter_colors -v
+pytest test_logging_toolkit.py::test_json_formatter_exception -v
 ```
-**Types checked:**
-- Colored output, JSON, plain text
-- Chained handlers
+**Covers:**
+- ANSI color codes in logs
+- JSON structure validation
+- Exception serialization in JSON
 
-### PySpark Instrumentation
+---
+
+### File Rotation Tests
 ```bash
-pytest -m spark
+pytest test_logging_toolkit.py::test_create_file_handler_and_rotation -v
+pytest test_logging_toolkit.py::test_create_timed_file_handler -v
 ```
-**Scalability scenarios:**
-- DataFrame logging (log_spark_dataframe_info)
-- Log capture in simulated Spark jobs (with mocks)
+**Covers:**
+- Size-based rotation
+- Time-based rotation
+- Backup file creation
+
+---
+
+### Timer & Metrics
+```bash
+pytest test_logging_toolkit.py::test_logtimer_context_and_decorator -v
+pytest test_logging_toolkit.py::test_logmetrics_increment_set_log_logall -v
+```
+**Covers:**
+- Timing with context manager and decorator
+- Incrementing, setting, timing, and logging metrics
+
+---
+
+### Spark DataFrame Logging
+```bash
+pytest test_logging_toolkit.py::test_log_spark_dataframe_info_basic -v
+pytest test_logging_toolkit.py::test_log_spark_dataframe_info_none -v
+```
+**Covers:**
+- Schema, sample, and stats logging for DataFrames
+- Handling `None` DataFrame input
+
+---
 
 ## 📊 Interpreting Results
 
-### Normal Successful Output
+### Successful Run
 ```
 ======================== test session starts ========================
-test_logging_toolkit.py::TestLogTimer PASSED [10%]
-test_logging_toolkit.py::TestLogMetrics PASSED [20%]
+test_logging_toolkit.py::test_colored_formatter_colors PASSED  [ 10%]
+test_logging_toolkit.py::test_json_formatter_simple PASSED     [ 20%]
 ...
-======================== 48 passed in 12.34s ========================
+======================== 22 passed in 3.45s ========================
 ```
 
-### Common Failures/Troubleshooting
-- Logs not showing in caplog: Use `get_logger(..., propagate=True)` in the test!
-- Duplicate handlers: Ensure you don't add a new handler for each test.
-- Race condition: File handlers blocking on slow systems?
-- Use temp directories or adjust rotation settings.
+### Common Failures
+- **PySpark not installed** → Spark tests will be skipped (`pytest.mark.skipif`).
+- **File permission issues** → Check temp directory permissions for rotation tests.
+- **Handler duplication** → Clear handlers before adding new ones in setup.
+
+---
 
 ## 🐛 Debugging & Troubleshooting
 
 ### Run in Debug Mode
 ```bash
-# Debug with breakpoints
 make test-debug
 # or
 pytest --pdb -v
-
-# Debug a specific test
-pytest --log-cli-level=DEBUG --capture=no -v
 ```
-#### Tips
-- If logs aren’t captured, check `propagate` and handlers.
-- Use `caplog.records` (not `capsys`) for log assertions.
-- For visual debugging, run a test and inspect output files in temp folders.
 
-## Checklist for New Tests
-- Descriptive name (test_function_scenario)
-- Docstring explaining the test
-- Mock logging objects if needed
-- Check output in `caplog.records` (not stdout)
-- Edge cases: logger without handler, duplicate log, root logger
-- Test colored, JSON, and rotating formats
-- Test LogTimer as context manager and decorator
-- Test LogMetrics with various metric types
-- Acceptable performance (massive logs < 30s)
-
-## Continuous Execution & Development
-
-### Watch Mode
-```bash
-make test-watch
-pytest --looponfail
-```
-### Specific Tests
+### Debug specific test
 ```bash
 pytest -k "LogTimer" -v
-pytest test_logging_toolkit.py::TestLogTimer::test_context_and_decorator -v
+pytest test_logging_toolkit.py::test_logtimer_context_and_decorator -v
 ```
+
+---
+
+## ✅ Checklist for New Tests
+- Descriptive name (`test_function_scenario`)
+- Docstring explaining the test
+- Use pytest fixtures (`caplog`, `capsys`, `tmp_path`) when possible
+- Test both normal and edge cases
+- Include logging with/without colors, JSON, and rotation
+- For Spark, handle both DataFrame and `None`
+
+---
 
 ## 🚀 CI/CD Integration
 
@@ -201,47 +215,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - name: Run tests
         run: make test-ci
 ```
 
-### Full Pipeline
+**Full Pipeline:**
 ```bash
 make quality-check  # Lint + format + test + coverage
 ```
-
-### Example Test Snippets
-```python
-def test_configure_basic_logging_and_get_logger(caplog):
-    configure_basic_logging(level=logging.DEBUG, use_colors=False)
-    logger = get_logger("my.logger", level=logging.DEBUG, propagate=True)
-    with caplog.at_level(logging.DEBUG):
-        logger.info("info message")
-        logger.error("error message")
-    msgs = " ".join(r.getMessage() for r in caplog.records)
-    assert "info message" in msgs
-    assert "error message" in msgs
-
-def test_logtimer_context_and_decorator(caplog):
-    logger = get_logger("timer", propagate=True)
-    with LogTimer(logger, "Context Operation"):
-        time.sleep(0.05)
-    assert any("Completed: Context Operation" in r.getMessage() for r in caplog.records)
-```
----
-
-## 🎯 Main Command Summary
-
-| Action         | Command             |
-|----------------|--------------------|
-| **Setup**      | `make install`     |
-| **Basic tests**| `make test`        |
-| **With coverage** | `make test-cov` |
-| **Linting**    | `make lint`        |
-| **Debug**      | `make test-debug`  |
-| **Clean**      | `make clean`       |
-| **Pipeline**   | `make quality-check`|
