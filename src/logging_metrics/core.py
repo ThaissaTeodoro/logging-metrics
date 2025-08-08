@@ -359,7 +359,7 @@ def get_logger(
         level (int, optional): Log level. If None, uses the default level.
         handlers (List[logging.Handler], optional): Handlers to add to the logger.
         propagate (bool, optional): If None, sets automatically according to caplog_friendly.
-        caplog_friendly (bool): If True, does not add handlers and enables propagate (for pytest caplog tests).
+        caplog_friendly (bool): If True, does not add handlers and enables propagate.
 
     Returns:
         logging.Logger: Configured logger.
