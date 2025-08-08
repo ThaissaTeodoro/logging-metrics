@@ -4,7 +4,7 @@ PYTHON := python3
 PIP := $(PYTHON) -m pip
 PYTEST := $(PYTHON) -m pytest
 
-PKG := src/logging_metrics 
+PKG := logging_metrics 
 TESTS := test              
 
 
@@ -76,12 +76,14 @@ quality-check: lint test-cov
 	@echo "$(GREEN)Quality check completed!$(NC)"
 
 lint: 
-	@echo "$(YELLOW)Performing linting...$(NC)"
-	flake8 $(PKG) $(TESTS) --max-line-length=100 --ignore=E203,W503
+	echo "$(YELLOW)Performing linting...$(NC)"
+	flake8 src/$(PKG) $(TESTS) --max-line-length=100 --ignore=E203,W503
+	black --check src/$(PKG) $(TESTS) --line-length=100
 
 format: 
 	@echo "$(YELLOW)Format code...$(NC)"
-	black $(PKG) $(TESTS) --line-length=100
+	black src/$(PKG) $(TESTS) --line-length=100
+	ruff check src/$(PKG) $(TESTS) --fix --ignore=E203,W503 || true
 
 quality-check: format test-cov
 
