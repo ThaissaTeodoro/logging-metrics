@@ -1,54 +1,43 @@
+[![PyPI version](https://img.shields.io/pypi/v/logging-metrics.svg)](https://pypi.org/project/logging-metrics/)
+[![Python versions](https://img.shields.io/pypi/pyversions/logging-metrics.svg)](https://pypi.org/project/logging-metrics/)
+[![License](https://img.shields.io/github/license/ThaissaTeodoro/logging-metrics)](https://github.com/ThaissaTeodoro/logging-metrics/blob/main/LICENSE)
+[![Build Status](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/tests.yml/badge.svg)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/tests.yml)
+[![Publish](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish.yml/badge.svg)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish.yml)
+[![codecov](https://codecov.io/gh/ThaissaTeodoro/logging-metrics/branch/main/graph/badge.svg)](https://codecov.io/gh/ThaissaTeodoro/logging-metrics)
 
-# logging-metrics - Utilities Library for Logging Configuration and Management
+# logging-metrics  
+**Utilities Library for Logging Configuration and Management**
 
-This module provides functions and classes to configure logging for different environments and use cases:
-
-- Colored logs for the terminal
-- Rotating log files (by time or size)
-- Customizable settings for different verbosity levels
-- Text or JSON formatters compatible with external analysis tools
-- Utilities for timing operations and collecting custom metrics
-- **Utility functions for logging PySpark DataFrames** (e.g., row count, schema, samples, and basic statistics)
-
-Main Components:
-----------------
-- `ColoredFormatter`: Colorized terminal output for quick identification of log levels
-- `JSONFormatter`: JSON-formatted logs for external tool integration
-- Functions to create handlers (console, file, rotation by time or size)
-- `LogTimer`: Measure execution time of code blocks (context manager or decorator)
-- `LogMetrics`: Collect and log custom metrics (counters, timers, values)
-- `log_spark_dataframe_info`: Easy, structured logging for PySpark DataFrames
-
-This toolkit is recommended for data pipelines, ETLs, and projects where traceability, auditability, and log performance are critical requirements.
+A library for configuring and managing logs in Python, focused on simplicity, performance, and observability — with support for PySpark integration.
 
 ---
 
-This README.md covers:
-
-- Purpose
-- Installation
-- Main Features
-- Best Practices
-- Usage Example
-- Pyspark dataframe integration
-- Dependencies & License
+## 📑 Table of Contents
+- [✨ Features](#-features)
+- [📦 Installation](#-installation)
+- [📋 Functions and Classes Overview](#-functions-and-classes-overview)
+- [🚀 Quick Start](#-quick-start)
+- [📖 Main Features](#-main-features)
+- [🏆 Best Practices](#-best-practices)
+- [❌ Avoid](#-avoid)
+- [🔧 Advanced Configuration](#-advanced-configuration)
+- [🧪 Complete Example](#-complete-example)
+- [🧪 Tests](#-tests)
+- [⚙️ CI/CD](#️-cicd)
+- [🔧 Requirements](#-requirements)
+- [📝 Changelog](#-changelog)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#license)
 
 ---
 
-# logging-metrics
-
-A library for configuring and managing logs in Python, focused on simplicity and performance.
-
----
-
-#### ✨ Features
-
+## ✨ Features
 - 🎨 Colored logs for the terminal with different levels
 - 📁 Automatic file rotation by time or size
 - ⚡ PySpark DataFrame integration
 - 📊 JSON format for observability systems
-- ⏱️ Timing with LogTimer
-- 📈 Metrics monitoring with LogMetrics
+- ⏱️ Timing with `LogTimer`
+- 📈 Metrics monitoring with `LogMetrics`
 - 🔧 Hierarchical logger configuration
 - 🚀 Optimized performance for critical applications
 
@@ -56,23 +45,21 @@ A library for configuring and managing logs in Python, focused on simplicity and
 
 ## 📦 Installation
 
-#### Install via pip:
+**From PyPI:**
 ```bash
-pip install logging-metrics 
+pip install logging-metrics
 ```
 
-#### For development:
+**For development:**
 ```bash
-git clone https://github.com/thaissateodoro/logging-metrics.git
+git clone https://github.com/ThaissaTeodoro/logging-metrics.git
 cd logging-metrics
 pip install -e ".[dev]"
 ```
 
 ---
-## 📋 Functions and Classes Overview
 
-Main Functions
-```
+## 📋 Functions and Classes Overview
 | Name                      | Type     | Description                                                                          |
 |---------------------------|----------|--------------------------------------------------------------------------------------|
 | `configure_basic_logging` | Function | Configures root logger for colored console logging.                                  |
@@ -81,41 +68,23 @@ Main Functions
 | `log_spark_dataframe_info`| Function | Logs schema, sample, stats of a PySpark DataFrame (row count, sample, stats, etc).   |
 | `LogMetrics`              | Class    | Utility for collecting, incrementing, timing, and logging custom processing metrics. |
 | `get_logger`              | Function | Returns a logger with custom handlers and caplog-friendly mode for pytest.           |
-```
----
-
-### Utility Classes
-#### LogTimer
-- Context manager: with LogTimer(logger, "operation"):
-- Decorator: @LogTimer.decorator(logger, "function")
-- Manual: timer.start() / timer.stop()
-
-#### LogMetrics
-- Counters: metrics.increment('counter')
-- Timers: metrics.start('timer') / metrics.stop('timer')
-- Context manager: with metrics.timer('operation'):
-- Report: metrics.log_all()
 
 ---
 
 ## 🚀 Quick Start
-
 ```python
 import logging
 from logging_metrics import setup_file_logging, LogTimer
 
-# Basic configuration
 logger = setup_file_logging(
     logger_name="my_app",
     log_dir="./logs",
-    console_level=logging.INFO,  # Less verbose in console
-    level=logging.DEBUG          # More detailed in the file
+    console_level=logging.INFO,
+    level=logging.DEBUG
 )
 
-# Simple usage
 logger.info("Application started!")
 
-# Timing operations
 with LogTimer(logger, "Critical operation"):
     # your code here
     pass
@@ -124,120 +93,119 @@ with LogTimer(logger, "Critical operation"):
 ---
 
 ## 📖 Main Features
-
 1. Logging configuration:
-    ```python
-    import logging
-    from logging-metrics import configure_basic_logging
-    logger = configure_basic_logging()
-    logger.debug("Debug message")     # Gray
-    logger.info("Info")               # Green  
-    logger.warning("Warning")         # Yellow
-    logger.error("Error")             # Red
-    logger.critical("Critical")       # Bold red
-    ```
+  ```python
+  import logging
+  from logging-metrics import configure_basic_logging
+  logger = configure_basic_logging()
+  logger.debug("Debug message")     # Gray
+  logger.info("Info")               # Green  
+  logger.warning("Warning")         # Yellow
+  logger.error("Error")             # Red
+  logger.critical("Critical")       # Bold red
+  ```
 
 2. Automatic Log Rotation:
-    ```python
-    from logging-metrics import setup_file_logging, LogTimer
-    # Size-based rotation
-    logger = setup_file_logging(
-        logger_name="app",
-        log_dir="./logs",
-        max_bytes=10*1024*1024,  # 10MB
-        rotation='size'
-    )
-    
-    # Time-based rotation
-    logger = setup_file_logging(
-        logger_name="app", 
-        log_dir="./logs",
-        rotation='time'    
-    )
-    ```
+  ```python
+  from logging-metrics import setup_file_logging, LogTimer
+  # Size-based rotation
+  logger = setup_file_logging(
+      logger_name="app",
+      log_dir="./logs",
+      max_bytes=10*1024*1024,  # 10MB
+      rotation='size'
+  )
+  
+  # Time-based rotation
+  logger = setup_file_logging(
+      logger_name="app", 
+      log_dir="./logs",
+      rotation='time'    
+  )
+  ```
 
 3. Spark/Databricks Integration:
-    ```python
-    from pyspark.sql import SparkSession
-    from logging_metrics import configure_basic_logging, log_spark_dataframe_info
-    
-    spark = SparkSession.builder.getOrCreate()
-    df = spark.createDataFrame([(1, "Ana"), (2, "Bruno")], ["id", "nome"])
-    
-    logger = configure_basic_logging()
-    print("Logger:", logger)
-    
-    log_spark_dataframe_info(
-        df = df,logger = logger, name ="spark_app")
-    
-    logger.info("Spark processing started")
-    ```
+  ```python
+  from pyspark.sql import SparkSession
+  from logging_metrics import configure_basic_logging, log_spark_dataframe_info
+  
+  spark = SparkSession.builder.getOrCreate()
+  df = spark.createDataFrame([(1, "Ana"), (2, "Bruno")], ["id", "nome"])
+  
+  logger = configure_basic_logging()
+  print("Logger:", logger)
+  
+  log_spark_dataframe_info(
+      df = df,logger = logger, name ="spark_app")
+  
+  logger.info("Spark processing started")
+  ```
 
 4. ⏱ Timing with LogTimer:
-    ```python
-    from logging_metrics import LogTimer, configure_basic_logging
+  ```python
+  from logging_metrics import LogTimer, configure_basic_logging
 
-    logger = configure_basic_logging()
-    # As a context manager
-    with LogTimer(logger, "DB query"):
-        logger.info("Test")
-    
-    # As a decorator
-    @LogTimer.as_decorator(logger, "Data processing")
-    def process_data(data):
-        return data.transform()
-        ```
+  logger = configure_basic_logging()
+  # As a context manager
+  with LogTimer(logger, "DB query"):
+      logger.info("Test")
+  
+  # As a decorator
+  @LogTimer.as_decorator(logger, "Data processing")
+  def process_data(data):
+    return data.transform()
+  ```
 
 5. 📈 Metrics Monitoring:
-    ```python
-   from logging_metrics import LogMetrics, configure_basic_logging
-    import time
-    
-    logger = configure_basic_logging()
-    
-    metrics = LogMetrics(logger)
-    
-    items = [10, 5, 80, 60, 'test1', 'test2']
-    
-    # Start timer for total operation
-    metrics.start('total_processing')
-    
-    
-    for item in items:
-        # Increments the processed records counter
-        metrics.increment('records_processed')
+  ```python
+  from logging_metrics import LogMetrics, configure_basic_logging
+  import time
+  
+  logger = configure_basic_logging()
+  
+  metrics = LogMetrics(logger)
+  
+  items = [10, 5, 80, 60, 'test1', 'test2']
+  
+  # Start timer for total operation
+  metrics.start('total_processing')
+  
+  
+  for item in items:
+      # Increments the processed records counter
+      metrics.increment('records_processed')
 
-        # If it is an error (simulation)
-        if isinstance(item, str):
-            metrics.increment('errors')
-    
-        # Simulates item processing
-        time.sleep(0.1)
-    
-        # Custom value example
-        metrics.set('last_item', item)
-    
-    
-    # Finalize and log all metrics
-    elapsed = metrics.stop('total_processing')
-    
-    # Logs all collected metrics
-    metrics.log_all()
-    
-    # Output:
-    # --- Processing Metrics ---
-    # Counters:
-    #   - records_processed: 6
-    #   - errors_found: 2
-    #  Values:
-    #   - last_item: test2
-    #  Completed timers:
-    #   - total_processing: 0.60 seconds
-    ```
+      # If it is an error (simulation)
+      if isinstance(item, str):
+          metrics.increment('errors')
+  
+      # Simulates item processing
+      time.sleep(0.1)
+  
+      # Custom value example
+      metrics.set('last_item', item)
+  
+  
+  # Finalize and log all metrics
+  elapsed = metrics.stop('total_processing')
+  
+  # Logs all collected metrics
+  metrics.log_all()
+  
+  # Output:
+  # --- Processing Metrics ---
+  # Counters:
+  #   - records_processed: 6
+  #   - errors_found: 2
+  #  Values:
+  #   - last_item: test2
+  #  Completed timers:
+  #   - total_processing: 0.60 seconds
+  ```
 
 6. Hierarchical Configuration:
-    ```python
-   from logging_metrics import setup_file_logging
+  ```python
+  from logging_metrics import setup_file_logging
     import logging
     
     # Main logger
@@ -263,74 +231,73 @@ with LogTimer(logger, "Critical operation"):
     api_logger.info("consultation successfully completed")
     api_logger.error("Error querying the api")
     auth_logger.error("Auth error!")
-    ```
+  ```
 
 7. 📊 JSON Format for Observability:
-    ```python
-    from logging_metrics import setup_file_logging
-    
-    # JSON logs for integration with ELK, Grafana, etc.
-    logger = setup_file_logging(
-        logger_name="microservice",
-        log_dir="./logs",
-        json_format = True
-    )
-    
-    logger.info("User logged in", extra={"user_id": 12345, "action": "login"})
-    
-    # Example JSON output:
-    # {
-    #   "timestamp": "2024-08-05T10:30:00.123Z",
-    #   "level": "INFO", 
-    #   "name": "microservice",
-    #   "message": "User logged in",
-    #   "module": "user-api",
-    #   "function": "<module>",
-    #   "line": 160,
-    #   "taskName": null,
-    #   "user_id": 12345,
-    #   "action": "login"
-    # }
-    ```
+  ```python
+  from logging_metrics import setup_file_logging
+  
+  # JSON logs for integration with ELK, Grafana, etc.
+  logger = setup_file_logging(
+      logger_name="microservice",
+      log_dir="./logs",
+      json_format = True
+  )
+  
+  logger.info("User logged in", extra={"user_id": 12345, "action": "login"})
+  
+  # Example JSON output:
+  # {
+  #   "timestamp": "2024-08-05T10:30:00.123Z",
+  #   "level": "INFO", 
+  #   "name": "microservice",
+  #   "message": "User logged in",
+  #   "module": "user-api",
+  #   "function": "<module>",
+  #   "line": 160,
+  #   "taskName": null,
+  #   "user_id": 12345,
+  #   "action": "login"
+  # }
+  ```
 
 ---
 
 ## 🏆 Best Practices
-
 1. Configure logging once at the start:
-    ```python
-    # In main.py or __init__.py
-    logger = setup_file_logging("my_app", log_dir="./logs")
-    ```
+  ```python
+  # In main.py or __init__.py
+  logger = setup_file_logging("my_app", log_dir="./logs")
+  ```
 
 2. Use logger hierarchy:
-    ```python
-    # Organize by modules/features
-    db_logger = logging.getLogger("app.database")
-    api_logger = logging.getLogger("app.api")
-    ```
+  ```python
+  # Organize by modules/features
+  db_logger = logging.getLogger("app.database")
+  api_logger = logging.getLogger("app.api")
+  ```
 
 3. Different levels for console and file:
-    ```python
-    logger = setup_file_logging(
-        console_level=logging.WARNING,  # Less verbose in console
-        level=logging.DEBUG             # More detailed in the file
-    )
-    ```
+  ```python
+  logger = setup_file_logging(
+      console_level=logging.WARNING,  # Less verbose in console
+      level=logging.DEBUG             # More detailed in the file
+  )
+  ```
 
 4. Use LogTimer for critical operations:
-    ```python
-    with LogTimer(logger, "Complex query"):
-        result = run_heavy_query()
-    ```
+  ```python
+  with LogTimer(logger, "Complex query"):
+      result = run_heavy_query()
+  ```
 
 5. Monitor metrics in long processes:
-    ```python
-    metrics = LogMetrics(logger)
-    for batch in batches:
-        with metrics.timer('batch_processing'):
-            process_batch(batch)
-    ```
+  ```python
+  metrics = LogMetrics(logger)
+  for batch in batches:
+      with metrics.timer('batch_processing'):
+          process_batch(batch)
+  ```
 
 ---
 
@@ -344,7 +311,6 @@ with LogTimer(logger, "Critical operation"):
 ---
 
 ## 🔧 Advanced Configuration
-
 Example of full configuration:
 ```python
 from logging_metrics import setup_file_logging, LogMetrics
@@ -375,7 +341,6 @@ for module in modules:
 ---
 
 ## 🧪 Complete Example
-
 ```python
 import logging
 from logging_metrics import setup_file_logging, LogTimer, LogMetrics
@@ -434,7 +399,6 @@ if __name__ == "__main__":
 
 The library has a complete test suite to ensure quality and reliability.
 
-#### Running the tests:
 ```bash
 # Install development dependencies
 pip install -e ".[dev]"
@@ -444,82 +408,68 @@ make test
 
 # Tests with coverage
 make test-cov
-
-# Specific tests
-pytest test/test_file_logging.py -v
-
-# Tests with different verbosity levels
-pytest test/ -v                     # Verbose
-pytest test/ -s                     # No output capture
-pytest test/ --tb=short             # Short traceback
 ```
 
-#### Test Structure
+Test structure:
 ```
 test/
-├── conftest.py                  # Shared pytest fixtures and test configurations        
-├── Makefile                     # Automation commands for testing, linting, and build tasks
-├── pytest.ini                   # Global pytest configuration settings
-├── run_tests.py                 # Script to run all tests automatically
-├── test-requirements.txt        # Development and test dependencies
-├── TEST_GUIDE.md                # Quick guide: how to run and interpret tests
-└── test_logging_metrics.py      # Automated tests for the logging_metrics library
+├── conftest.py
+├── pytest.ini
+├── test-requirements.txt
+├── test_logging_metrics.py
 ```
-
-#### Current coverage
-```
-# Coverage report
-Name                        Stmts   Miss  Cover
------------------------------------------------
-src/logging_metrics/__init__.py     12      0   100%
-src/logging_metrics/console.py      45      2    96%
-src/logging_metrics/file.py         78      3    96%
-src/logging_metrics/spark.py        32      1    97%
-src/logging_metrics/timer.py        56      2    96%
-src/logging_metrics/metrics.py      89      4    96%
------------------------------------------------
-TOTAL                            312     12    96%
-```
-
-#### Running tests in different environments
-```bash
-# Test in multiple Python versions with tox
-pip install tox
-
-tox
-
-# Specific configurations
-tox -e py38                # Python 3.8
-tox -e py39                # Python 3.9  
-tox -e py310               # Python 3.10
-tox -e py311               # Python 3.11
-tox -e py312               # Python 3.12
-tox -e lint                # Only linting
-tox -e coverage            # Only coverage
-```
-
-#### Running tests in CI/CD
-Tests are run automatically in:
 
 ---
 
+## ⚙️ CI/CD
+
+This project uses **GitHub Actions** for continuous integration and delivery.
+
+**CI Workflow (`tests.yml`):**
+- Runs on push and PR to `main`/`master`.
+- Steps:
+  1. Install dependencies and package in editable mode.
+  2. Lint code with `ruff` and `black`.
+  3. Run tests with `pytest` and measure coverage.
+  4. Fail build if coverage < 85%.
+  5. Upload HTML coverage report and send to Codecov.
+
+**CD Workflow (`publish.yml`):**
+- Triggered on push tags `v*.*.*`.
+- Steps:
+  1. Build wheel and sdist.
+  2. Check version tag matches `pyproject.toml`.
+  3. Publish to PyPI using `TWINE_USERNAME=__token__` and `TWINE_PASSWORD` from secrets.
+
+**Run CI locally:**
+```bash
+make test-ci     # Full pipeline
+make test-local  # Install + tests with coverage
+```
+
+**How to publish a new version**
+1. Update the version in pyproject.toml (version field).
+2. Update the CHANGELOG with the release notes.
+3. Create and push the tag:
+ ```bash
+  git add .
+  git commit -m "release: v0.1.0"
+  git tag -a v0.1.0 -m "release: v0.1.0"
+  git push origin v0.1.0
+ ```
+**This will automatically trigger the publish.yml workflow, which builds the package and uploads it to PyPI.**
+---
 
 ## 🔧 Requirements
-
-Python: >= 3.8
-
-Dependencies:
-
-- pytz (for timezone handling)
-- pyspark
+- Python >= 3.8  
+- Dependencies: `pytz`, `pyspark`
 
 ---
 
 ## 📝 Changelog
-
-v0.1.2 (Current)
+**v0.1.2 (Current)**
 - Initial stable version
-- LogTimer and LogMetrics
+- `LogTimer` and `LogMetrics`
 - Spark integration
 - Colored logs
 - JSON log support
@@ -529,16 +479,13 @@ v0.1.2 (Current)
 ---
 
 ## 🤝 Contributing
-
-#### Contributions are welcome!
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/logging-metrics`)
-3. Commit your changes (`git commit -m 'Add logging-metrics'`)
-4. Push to the branch (`git push origin feature/logging-metrics`)
-5. Open a Pull Request
+1. Fork the project  
+2. Create your feature branch  
+3. Commit your changes  
+4. Push to your branch  
+5. Open a Pull Request  
 
 ---
 
-## License
-
-MIT License. See LICENSE for details.
+## 📄 License
+MIT License. See [LICENSE](LICENSE) for details.
