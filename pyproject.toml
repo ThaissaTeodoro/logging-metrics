@@ -47,3 +47,17 @@ dev = [
 [project.urls]
 Repository = "https://github.com/ThaissaTeodoro/logging-metrics"
 Changelog = "https://https://github.com/ThaissaTeodoro/logging-metrics/blob/main/CHANGELOG.md"
+
+[tool.black]
+line-length = 100
+target-version = ["py310","py311","py312"]
+
+[tool.ruff]
+line-length = 100
+# ativa isort dentro do ruff
+extend-select = ["I"]
+exclude = ["dist", "build", ".venv"]
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203","W503"]

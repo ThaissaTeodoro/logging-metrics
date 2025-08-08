@@ -10,7 +10,7 @@ from .core import (
     setup_file_logging,
     LogTimer,
     LogMetrics,
-    log_spark_dataframe_info
+    log_spark_dataframe_info,
 )
 
 __all__ = [
@@ -25,5 +25,5 @@ __all__ = [
     "setup_file_logging",
     "LogTimer",
     "LogMetrics",
-    "log_spark_dataframe_info"
+    "log_spark_dataframe_info",
 ]

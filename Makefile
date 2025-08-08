@@ -72,7 +72,7 @@ test-local: clean install test-cov
 test-ci: clean install quality-check
 	@echo "$(GREEN)CI/CD pipeline completed!$(NC)"
 
-quality-check: lint test-cov
+quality-check: format lint test-cov
 	@echo "$(GREEN)Quality check completed!$(NC)"
 
 lint: 
