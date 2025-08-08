@@ -70,8 +70,7 @@ test-local:
 	clean install test-cov 
 	@echo "$(GREEN)Local setup completed successfully!$(NC)"
 
-test-ci: 
-	clean install quality-check
+test-ci: clean install quality-check
 	@echo "$(GREEN)CI/CD pipeline completed!$(NC)"
 
 quality-check: 
