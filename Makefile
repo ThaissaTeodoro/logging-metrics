@@ -66,8 +66,7 @@ test-report:
 	$(PYTEST) $(TESTS) --html=report.html --self-contained-html -v
 	@echo "$(GREEN)Report available at report.html$(NC)"
 
-test-local: 
-	clean install test-cov 
+test-local: clean install test-cov 
 	@echo "$(GREEN)Local setup completed successfully!$(NC)"
 
 test-ci: clean install quality-check
@@ -78,11 +77,11 @@ quality-check: lint test-cov
 
 lint: 
 	@echo "$(YELLOW)Performing linting...$(NC)"
-	flake8 src/$(PKG) $(TESTS) --max-line-length=100 --ignore=E203,W503
+	flake8 $(PKG) $(TESTS) --max-line-length=100 --ignore=E203,W503
 
 format: 
 	@echo "$(YELLOW)Format code...$(NC)"
-	black src/$(PKG) $(TESTS) --line-length=100
+	black $(PKG) $(TESTS) --line-length=100
 
 quality-check: format test-cov
 
