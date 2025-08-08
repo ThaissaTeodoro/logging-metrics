@@ -5,7 +5,7 @@ import json
 import pytest
 import time
 
-from logging_toolkit import (
+from logging_metrics import (
     ColoredFormatter,
     JSONFormatter,
     create_file_handler,
