@@ -4,7 +4,7 @@ PYTHON := python3
 PIP := $(PYTHON) -m pip
 PYTEST := $(PYTHON) -m pytest
 
-PKG := logging_metrics    
+PKG := src/logging_metrics 
 TESTS := test              
 
 
@@ -30,7 +30,7 @@ test:
 
 test-cov:
 	@echo "$(BLUE)Running tests with coverage...$(NC)"
-	PYTHONPATH=src $(PYTEST) $(TESTS) -v --cov=$(PKG) --cov-report=xml --cov-report=html --cov-report=term-missing
+	$(PYTEST) $(TESTS) -v --cov=$(PKG) --cov-report=xml --cov-report=html --cov-report=term-missing
 	@echo "$(GREEN)Coverage report available at htmlcov/index.html$(NC)"
 
 test-parallel:
