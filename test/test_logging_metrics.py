@@ -5,7 +5,7 @@ import json
 import pytest
 import time
 
-from core import (
+from logging_metrics.core import (
     ColoredFormatter,
     JSONFormatter,
     create_file_handler,
