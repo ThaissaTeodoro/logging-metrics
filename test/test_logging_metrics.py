@@ -5,7 +5,7 @@ import json
 import pytest
 import time
 
-from logging_metrics import (
+from core import (
     ColoredFormatter,
     JSONFormatter,
     create_file_handler,
@@ -17,7 +17,7 @@ from logging_metrics import (
     LogTimer,
     log_spark_dataframe_info,
     LogMetrics,
-    _make_timezone_converter,
+    _make_timezone_converter
 )
 
 try:
