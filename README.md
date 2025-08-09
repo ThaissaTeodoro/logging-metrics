@@ -467,7 +467,7 @@ make test-local  # Install + tests with coverage
 ---
 
 ## 📝 Changelog
-**v0.1.2 (Current)**
+**v0.2.0 (Current)**
 - Initial stable version
 - `LogTimer` and `LogMetrics`
 - Spark integration
