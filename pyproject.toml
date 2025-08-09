@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "logging-metrics"
-version = "0.2.0"
+version = "0.2.1"
 description = "Advanced logging utilities for robust, standardized logs in Python projects, APIs, data engineering, and more."
 
 authors = [
