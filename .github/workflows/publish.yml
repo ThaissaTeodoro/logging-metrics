@@ -34,6 +34,9 @@ jobs:
           )
           echo "Tag: $TAG | pyproject: $FILE_VERSION"
           [ "$TAG" = "$FILE_VERSION" ]
+      
+      # - name: Publish to PyPI via OIDC
+      #   uses: pypa/gh-action-pypi-publish@release/v1
 
       - name: Publish to PyPI
         env:
