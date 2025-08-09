@@ -1,8 +1,8 @@
 [![PyPI version](https://img.shields.io/pypi/v/logging-metrics.svg)](https://pypi.org/project/logging-metrics/)
 [![Python versions](https://img.shields.io/pypi/pyversions/logging-metrics.svg)](https://pypi.org/project/logging-metrics/)
 [![License](https://img.shields.io/github/license/ThaissaTeodoro/logging-metrics)](https://github.com/ThaissaTeodoro/logging-metrics/blob/main/LICENSE)
-[![Build Status](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/tests.yml/badge.svg)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/tests.yml)
-[![Publish](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish.yml/badge.svg)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish.yml)
+[![Build Status](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/tests.yml/badge.svg)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/ci.yml/badge.svg?branch=main)
+[![Publish](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish.yml/badge.svg)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish-to-pypi.yml)
 [![codecov](https://codecov.io/gh/ThaissaTeodoro/logging-metrics/branch/main/graph/badge.svg)](https://codecov.io/gh/ThaissaTeodoro/logging-metrics)
 
 # logging-metrics  
@@ -425,7 +425,7 @@ test/
 
 This project uses **GitHub Actions** for continuous integration and delivery.
 
-**CI Workflow (`tests.yml`):**
+**CI Workflow (`ci.yml`):**
 - Runs on push and PR to `main`/`master`.
 - Steps:
   1. Install dependencies and package in editable mode.
@@ -434,12 +434,11 @@ This project uses **GitHub Actions** for continuous integration and delivery.
   4. Fail build if coverage < 85%.
   5. Upload HTML coverage report and send to Codecov.
 
-**CD Workflow (`publish.yml`):**
+**CD Workflow (`Publish to PyPI.yml`):**
 - Triggered on push tags `v*.*.*`.
 - Steps:
   1. Build wheel and sdist.
   2. Check version tag matches `pyproject.toml`.
-  3. Publish to PyPI using `TWINE_USERNAME=__token__` and `TWINE_PASSWORD` from secrets.
 
 **Run CI locally:**
 ```bash
@@ -461,13 +460,13 @@ make test-local  # Install + tests with coverage
 ---
 
 ## 🔧 Requirements
-- Python >= 3.8  
+- Python >= 3.9  
 - Dependencies: `pytz`, `pyspark`
 
 ---
 
 ## 📝 Changelog
-**v0.2.0 (Current)**
+**v0.2.2 (Current)**
 - Initial stable version
 - `LogTimer` and `LogMetrics`
 - Spark integration
@@ -488,4 +487,4 @@ make test-local  # Install + tests with coverage
 ---
 
 ## 📄 License
-MIT License. See [LICENSE](LICENSE) for details.
+MIT License. See [LICENSE](https://github.com/ThaissaTeodoro/logging-metrics/blob/main/LICENSE) for details.
