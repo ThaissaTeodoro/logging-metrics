@@ -15,7 +15,7 @@ dependencies = [
   "pytz"
 ]
 
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 readme = "README.md"
 license = "MIT"
 
@@ -50,7 +50,7 @@ Changelog = "https://https://github.com/ThaissaTeodoro/logging-metrics/blob/main
 
 [tool.black]
 line-length = 100
-target-version = ["py310","py311","py312"]
+target-version = ["py309","py310","py311","py312"]
 
 [tool.ruff]
 line-length = 100
