@@ -1,0 +1,37 @@
+# ========================================
+# MAIN MAINTAINER
+# ========================================
+
+# ========================================
+# CRITICAL FILES
+# ========================================
+
+# Project setup and dependencies
+pyproject.toml @ThaissaTeodoro
+setup.py @ThaissaTeodoro 
+requirements*.txt @ThaissaTeodoro
+poetry.lock @ThaissaTeodoro
+
+# License and Security Files
+.github/ @ThaissaTeodoro
+*.yml @ThaissaTeodoro
+*.yaml @ThaissaTeodoro
+
+# License and Security Files
+LICENSE @ThaissaTeodoro
+SECURITY.md @ThaissaTeodoro
+.gitignore @ThaissaTeodoro
+
+# ========================================
+# SOURCE CODE
+# ========================================
+src/logging_metrics/ @ThaissaTeodoro
+logging_metrics/ @ThaissaTeodoro
+
+# ========================================
+# DOCUMENTATION
+# ========================================
+
+README.md @ThaissaTeodoro
+CHANGELOG.md @ThaissaTeodoro
+docs/ @ThaissaTeodoro
