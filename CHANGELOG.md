@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New dependencies for dev.
 ----
 
-## [0.2.0] - 2025-08-09
+## [0.2.3] - 2025-08-09
 ### Added
 - Add unit and integration tests.
 - Improve examples in the README.
