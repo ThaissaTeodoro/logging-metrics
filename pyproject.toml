@@ -50,7 +50,7 @@ Changelog = "https://https://github.com/ThaissaTeodoro/logging-metrics/blob/main
 
 [tool.black]
 line-length = 100
-target-version = ["py309","py310","py311","py312"]
+target-version = ["py39","py310","py311","py312"]
 
 [tool.ruff]
 line-length = 100
