@@ -1,9 +1,10 @@
 [![PyPI version](https://img.shields.io/pypi/v/logging-metrics.svg)](https://pypi.org/project/logging-metrics/)
 [![Python versions](https://img.shields.io/pypi/pyversions/logging-metrics.svg)](https://pypi.org/project/logging-metrics/)
 [![License](https://img.shields.io/github/license/ThaissaTeodoro/logging-metrics)](https://github.com/ThaissaTeodoro/logging-metrics/blob/main/LICENSE)
-[![Build Status](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/ci.yml/badge.svg?branch=main)
-[![Publish](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish-to-pypi.yml)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish-to-pypi.yml)
+[![Build Status](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/ci.yml)
+[![Publish](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish-to-pypi.yml/badge.svg?branch=main)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish-to-pypi.yml)
 [![codecov](https://codecov.io/gh/ThaissaTeodoro/logging-metrics/branch/main/graph/badge.svg)](https://codecov.io/gh/ThaissaTeodoro/logging-metrics)
+[![GPG Signed](https://img.shields.io/badge/commits-GPG%20signed-blue?logo=gnuprivacyguard)](https://github.com/ThaissaTeodoro/logging-metrics/commits?author=ThaissaTeodoro)
 
 # logging-metrics  
 **Utilities Library for Logging Configuration and Management**
