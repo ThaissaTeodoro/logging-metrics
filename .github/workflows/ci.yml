@@ -48,3 +48,10 @@ jobs:
           path: htmlcov
           token: ${{ secrets.CODECOV_API_TOKEN }}
 
+gate:
+  name: ci-gate
+  runs-on: ubuntu-latest
+  needs: [test]   # ou [test_39, test_310, ...] se separar os jobs
+  steps:
+    - run: echo "All checks passed"
+
