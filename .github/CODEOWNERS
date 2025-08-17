@@ -1,11 +1,6 @@
 # ========================================
 # LOGGING-METRICS v1.0.0 - CODE OWNERSHIP
 # ========================================
-# For solo projects, CODEOWNERS serves as:
-# - Documentation of responsibilities
-# - Template for future contributors
-# - Automatic protection on main branches
-
 # ========================================
 # GLOBAL OWNER (fallback for everything)
 # ========================================
