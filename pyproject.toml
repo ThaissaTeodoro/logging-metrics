@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "logging-metrics"
-version = "0.2.3"
+version = "1.0.0"
 description = "Advanced logging utilities for robust, standardized logs in Python projects, APIs, data engineering, and more."
 
 authors = [
@@ -12,52 +12,159 @@ authors = [
 ]
 
 dependencies = [
-  "pytz"
+  "pytz>=2023.3,<2025.0"
 ]
 
 requires-python = ">=3.9"
 readme = "README.md"
-license = "MIT"
+license = {text = "MIT"}
 
-keywords = ["logging", "metrics", "python", "spark", "instrumentation"]
+keywords = ["logging", "metrics", "python", "spark", "instrumentation", "monitoring", "performance"]
 
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10", 
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Operating System :: OS Independent",
-  "Topic :: Software Development :: Libraries"
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Logging",
+  "Topic :: System :: Monitoring",
+  "Topic :: Software Development :: Debuggers",
+  "Typing :: Typed"
 ]
 
 [project.optional-dependencies]
+spark = [
+  "pyspark>=3.3.0,<5.0.0"
+]
+
 dev = [
   "pytest>=7.0.0",
   "pytest-cov>=4.0.0",
   "pytest-xdist>=3.0.0",
   "pytest-mock>=3.10.0",
-  "pyspark>=3.3.0",
+  "pyspark>=3.3.0,<5.0.0",
   "py4j>=0.10.9",
   "coverage>=6.0.0",
   "faker>=18.0.0",
   "hypothesis>=6.0.0",
   "black>=22.0.0",
-  "flake8>=5.0.0"
+  "flake8>=5.0.0",
+  "ruff>=0.1.0",
+  "mypy>=1.0.0"
+]
+
+all = [
+  "pyspark>=3.3.0,<5.0.0"
 ]
 
 [project.urls]
 Repository = "https://github.com/ThaissaTeodoro/logging-metrics"
-Changelog = "https://https://github.com/ThaissaTeodoro/logging-metrics/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/ThaissaTeodoro/logging-metrics#readme"
+Changelog = "https://github.com/ThaissaTeodoro/logging-metrics/blob/main/CHANGELOG.md"
+"Bug Reports" = "https://github.com/ThaissaTeodoro/logging-metrics/issues"
+"Source Code" = "https://github.com/ThaissaTeodoro/logging-metrics"
 
 [tool.black]
 line-length = 100
 target-version = ["py39","py310","py311","py312"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
 
 [tool.ruff]
 line-length = 100
-# ativa isort dentro do ruff
-extend-select = ["I"]
-exclude = ["dist", "build", ".venv"]
+target-version = "py39"
+exclude = ["dist", "build", ".venv", ".git"]
 
-[tool.flake8]
-max-line-length = 100
-extend-ignore = ["E203","W503"]
+[tool.ruff.lint]
+extend-select = ["I", "W291", "W292", "W293"]
+ignore = ["E203"]
+fixable = ["I", "W291", "W292", "W293"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["logging_metrics"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "pyspark.*",
+    "pytz.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["tests_*.py", "*_tests.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-ra",
+    "--color=yes", 
+    "--strict-markers",
+    "--disable-warnings"
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests", 
+    "slow: Slow tests",
+    "performance: Performance tests",
+    "spark: Tests that require SparkSession"
+]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(name)s: %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+filterwarnings = [
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning:pyspark.*"
+]
+
+[tool.coverage.run]
+source = ["src/logging_metrics"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+show_missing = true
+precision = 2
