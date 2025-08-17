@@ -5,7 +5,7 @@ PIP := $(PYTHON) -m pip
 PYTEST := $(PYTHON) -m pytest
 
 PKG := logging_metrics 
-TESTS := test              
+TESTS := tests             
 
 
 RED := \033[0;31m
@@ -75,19 +75,17 @@ test-ci: clean install quality-check
 quality-check: format lint test-cov
 	@echo "$(GREEN)Quality check completed!$(NC)"
 
-lint: 
-	echo "$(YELLOW)Performing linting...$(NC)"
-	flake8 src/$(PKG) $(TESTS) --max-line-length=100 --ignore=E203,W503
-	black --check src/$(PKG) $(TESTS) --line-length=100
-
-format: 
-	@echo "$(YELLOW)Format code...$(NC)"
-	black src/$(PKG) $(TESTS) --line-length=100
-	ruff check src/$(PKG) $(TESTS) --fix --ignore=E203,W503 || true
-
 quality-check: format test-cov
 
 clean:
 	@echo "$(YELLOW)Cleaning up temporary files...$(NC)"
 	rm -rf .pytest_cache htmlcov .coverage coverage.xml __pycache__ */__pycache__ *.pyc
 
+format: 
+	@echo "$(YELLOW)Format code...$(NC)"
+	black src/$(PKG) $(TESTS) --line-length=100
+	ruff check src/$(PKG) $(TESTS) --fix --select I || true
+
+lint: 
+	echo "$(YELLOW)Performing linting...$(NC)"
+	flake8 src/$(PKG) $(TESTS) --max-line-length=100 --ignore=E203,W503
