@@ -1,38 +1,54 @@
 # ========================================
-# MAIN MAINTAINER
+# LOGGING-METRICS v1.0.0 - CODE OWNERSHIP
 # ========================================
+# For solo projects, CODEOWNERS serves as:
+# - Documentation of responsibilities
+# - Template for future contributors
+# - Automatic protection on main branches
 
 # ========================================
-# CRITICAL FILES
+# GLOBAL OWNER (fallback for everything)
+# ========================================
+* @ThaissaTeodoro
+
+# ========================================
+# CRITICAL CONFIGURATION FILES
 # ========================================
 
-# Project setup and dependencies
+# Build and dependencies
 pyproject.toml @ThaissaTeodoro
-setup.py @ThaissaTeodoro 
 requirements*.txt @ThaissaTeodoro
 poetry.lock @ThaissaTeodoro
+Pipfile* @ThaissaTeodoro
 
-# License and Security Files
+# CI/CD and automation
 .github/ @ThaissaTeodoro
-*.yml @ThaissaTeodoro
-*.yaml @ThaissaTeodoro
+Makefile @ThaissaTeodoro
+tox.ini @ThaissaTeodoro
 
-# License and Security Files
+# Security and license
 LICENSE @ThaissaTeodoro
 SECURITY.md @ThaissaTeodoro
 .gitignore @ThaissaTeodoro
 
 # ========================================
-# SOURCE CODE
+# MAIN SOURCE CODE
 # ========================================
 src/logging_metrics/ @ThaissaTeodoro
-logging_metrics/ @ThaissaTeodoro
+src/logging_metrics/core.py @ThaissaTeodoro
+src/logging_metrics/__init__.py @ThaissaTeodoro
+
+# ========================================
+# TESTING AND QUALITY
+# ========================================
+test/ @ThaissaTeodoro
+tests/ @ThaissaTeodoro
+test/pytest.ini @ThaissaTeodoro
+test/conftest.py @ThaissaTeodoro
 
 # ========================================
 # DOCUMENTATION
 # ========================================
-
 README.md @ThaissaTeodoro
 CHANGELOG.md @ThaissaTeodoro
-docs/ @ThaissaTeodoro
-
+MIGRATION_GUIDE.md @ThaissaTeodoro
