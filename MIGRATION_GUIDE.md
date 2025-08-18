@@ -342,7 +342,7 @@ from logging_metrics.core import setup_file_logging, LogTimer, LogMetrics
 ## 📞 **Support**
 
 - **Issues**: [GitHub Issues](https://github.com/ThaissaTeodoro/logging-metrics/issues)
-- **Documentation**: [README.md](README.md)
+- **Documentation**: [README.md](https://github.com/ThaissaTeodoro/logging-metrics/README.md)
 - **Examples**: Check the examples in function docstrings
 
 Remember: Migration is **optional**. Your code works as-is, and you can adopt new features at your own pace!
