@@ -5,7 +5,7 @@ PIP := $(PYTHON) -m pip
 PYTEST := $(PYTHON) -m pytest
 
 PKG := logging_metrics 
-TESTS := test
+TESTS := tests
 
 
 RED := \033[0;31m
