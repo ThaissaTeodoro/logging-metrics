@@ -4,1389 +4,1713 @@
 [![Build Status](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/ci.yml)
 [![Publish to PyPI](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish-to-pypi.yml/badge.svg)](https://github.com/ThaissaTeodoro/logging-metrics/actions/workflows/publish-to-pypi.yml)
 [![codecov](https://codecov.io/gh/ThaissaTeodoro/logging-metrics/branch/main/graph/badge.svg)](https://codecov.io/gh/ThaissaTeodoro/logging-metrics)
-[![GPG Signed](https://img.shields.io/badge/commits-GPG%20signed-blue?logo=gnuprivacyguard)](https://github.com/ThaissaTeodoro/logging-metrics/commits?author=ThaissaTeodoro)
 
-# logging-metrics  
-**Production-Ready Logging Utilities Library for Python**
+# 🎯 logging-metrics  
+**Production-Ready Logging, Metrics, and Timing Library for Python**
 
-A comprehensive library for configuring and managing logs in Python, focused on simplicity, performance, and observability — with support for PySpark integration and advanced metrics collection.
+A comprehensive, battle-tested library for logging, metrics collection, and performance timing in Python applications. Features beautiful colored console output, intelligent file rotation, decorators for timing, and Prometheus-style metrics — all with zero-configuration defaults and PySpark integration.
 
-## 🎉 **Version 1.0.0 - Production Ready!**
+## 🎉 Version 1.0.0 - Production Ready!
 
-✅ **100% Backward Compatible** - Your existing code continues to work  
-🆕 **Enhanced Features** - New capabilities and robust error handling  
-🏗️ **Modular Structure** - Better organization with optional imports  
-📚 **Complete Documentation** - Comprehensive API documentation  
-🛡️ **Production Ready** - Formal API, error handling, and type safety  
+✅ **100% Backward Compatible** - Upgrade safely without code changes  
+🆕 **Enhanced Features** - More capabilities, robust error handling  
+🏗️ **Modular Structure** - Clean separation with optional imports  
+📚 **Complete Documentation** - Comprehensive guides and examples  
+🛡️ **Production Tested** - Formal API with type safety  
 
 ---
 
 ## 📑 Table of Contents
-- [✨ Features](#-features)
+
+- [✨ Key Features](#-key-features)
 - [📦 Installation](#-installation)
-- [🚨 Compatibility Notice](#-compatibility-notice)
-- [🏗️ Modular Structure](#️-modular-structure)
-- [📋 API Overview](#-api-overview)
-- [🚀 Quick Start](#-quick-start)
-- [📖 Main Features](#-main-features)
-- [🆕 New in v1.0.0](#-new-in-v100)
+- [🚀 Quick Start (30 seconds)](#-quick-start-30-seconds)
+- [📖 Complete Usage Guide](#-complete-usage-guide)
+  - [Logging](#1-logging)
+  - [File Rotation](#2-file-rotation)
+  - [Timing Functions](#3-timing-functions)
+  - [Metrics Collection](#4-metrics-collection)
+  - [PySpark Integration](#5-pyspark-integration)
+- [🎨 Advanced Examples](#-advanced-examples)
 - [🏆 Best Practices](#-best-practices)
 - [❌ Common Pitfalls](#-common-pitfalls)
-- [🔧 Advanced Configuration](#-advanced-configuration)
-- [🧪 Complete Examples](#-complete-examples)
-- [🧪 Testing](#-testing)
-- [⚙️ CI/CD](#️-cicd)
-- [🔧 Requirements](#-requirements)
-- [📝 Changelog](#-changelog)
+- [🔧 Configuration Reference](#-configuration-reference)
+- [🆕 What's New in v1.0.0](#-whats-new-in-v100)
 - [🔄 Migration Guide](#-migration-guide)
+- [🐛 Troubleshooting](#-troubleshooting)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 
 ---
 
-## ✨ Features
-- 🎨 **Colored logs** for terminal with different severity levels
-- 📁 **Automatic file rotation** by time or size with configurable retention
-- ⚡ **PySpark DataFrame integration** with comprehensive analysis
-- 📊 **JSON format** for observability systems (ELK, Grafana, etc.)
-- ⏱️ **Advanced timing** with `LogTimer` (context manager + decorator)
-- 📈 **Comprehensive metrics** with `LogMetrics` (counters, values, timers)
-- 🔧 **Hierarchical logger configuration** for modular applications
-- 🚀 **Production-ready** with robust error handling and type safety
-- 🏗️ **Modular architecture** with clean separation of concerns
-- 📚 **Complete API documentation** with examples and type hints
+## ✨ Key Features
+
+### 🎨 **Colored Console Logging**
+Beautiful, configurable colored output for different log levels with ANSI support:
+- 🔵 **DEBUG** - Cyan
+- 🟢 **INFO** - Green  
+- 🟡 **WARNING** - Yellow
+- 🔴 **ERROR** - Red
+- 🔴 **CRITICAL** - Red background (high visibility)
+
+### 📁 **Intelligent File Rotation**
+Automatic log rotation with cleanup to prevent disk space issues:
+- **Time-based**: Rotate daily, hourly, weekly, or at midnight
+- **Size-based**: Rotate when file reaches specified size
+- **Auto-cleanup**: Automatically remove old backups (configurable retention)
+- **Production-ready**: Handles edge cases and concurrent access
+
+### ⏱️ **Performance Timing**
+Measure and log function execution time with minimal code:
+- **Decorators**: `@time_it` for automatic timing
+- **Context managers**: Manual timing control
+- **Nested support**: Track complex operations
+- **Statistics**: Average, min, max execution times
+
+### 📊 **Metrics Collection**
+Prometheus-style metrics for monitoring:
+- **Counters**: Track events (requests, errors, etc.)
+- **Gauges**: Current values (active connections, queue size)
+- **Histograms**: Value distributions
+- **Timers**: Automatic timing metrics
+
+### ⚡ **PySpark Integration**
+Special support for big data workflows:
+- Log DataFrame schema and statistics
+- Track partition counts and sizes
+- Monitor transformations
+- Performance profiling
+
+### 🔧 **Zero Configuration**
+Works out-of-the-box with sensible defaults:
+```python
+from logging_metrics import get_logger
+logger = get_logger("app")
+logger.info("It just works!")
+```
 
 ---
 
 ## 📦 Installation
 
-### **From PyPI (Recommended):**
+### Basic Installation
+
 ```bash
 pip install logging-metrics
 ```
 
-### **With Optional Dependencies:**
+### With Optional Dependencies
+
 ```bash
 # For PySpark integration
 pip install logging-metrics[spark]
 
-# For development
+# For development (testing, linting, etc.)
 pip install logging-metrics[dev]
 
-# Everything
+# Install everything
 pip install logging-metrics[all]
 ```
 
-### **For Development:**
+### From Source (Development)
+
 ```bash
 git clone https://github.com/ThaissaTeodoro/logging-metrics.git
 cd logging-metrics
 pip install -e ".[dev]"
 ```
 
+### Requirements
+
+- **Python**: 3.8 or higher
+- **Core dependencies**: pytz (timezone support)
+- **Optional**: pyspark (for PySpark integration)
+
 ---
 
-## 🚨 **Compatibility Notice**
+## 🚀 Quick Start (30 seconds)
 
-### 🎉 **Great News: 100% Backward Compatible!**
-
-If you're upgrading from v0.x.x, **no code changes are required**. Your existing imports and usage patterns will continue to work exactly as before.
-
-### 🆕 **Optional: New Modular Structure**
-
-Starting with v1.0.0, you can optionally use more specific imports for better organization:
+### 1. Basic Logging
 
 ```python
-# ✅ Your existing code (still works perfectly)
-from logging_metrics import setup_file_logging, LogTimer, LogMetrics
+from logging_metrics import get_logger
 
-# 🆕 New modular imports (optional, for better organization)
-from logging_metrics.logger import setup_file_logging
-from logging_metrics.timers import LogTimer
-from logging_metrics.metrics import LogMetrics
+# Create logger
+logger = get_logger("my_app")
 
-# 🔄 Full compatibility fallback
-from logging_metrics.core import setup_file_logging, LogTimer, LogMetrics
+# Start logging!
+logger.info("Application started")
+logger.warning("Low disk space")
+logger.error("Connection failed")
 ```
 
-📖 **Need help migrating?** See our [Migration Guide](https://github.com/ThaissaTeodoro/logging-metrics/MIGRATION_GUIDE.md) for detailed information.
+**Output:**
+```
+2026-02-28 10:30:15 [INFO] my_app - Application started
+2026-02-28 10:30:16 [WARNING] my_app - Low disk space
+2026-02-28 10:30:17 [ERROR] my_app - Connection failed
+```
 
----
-
-## 🏗️ **Modular Structure**
-
-Starting with v1.0.0, the library is organized into specialized modules:
-
-| Module | Functionality | When to Use |
-|--------|----------------|-------------|
-| `logger.py` | Formatters, handlers, configuration | Basic logging setup |
-| `timers.py` | `LogTimer` for execution timing | Performance monitoring |
-| `metrics.py` | `LogMetrics` for data collection | Application metrics |
-| `core.py` | Backward compatibility | Gradual migration |
-
-### **Import Options:**
+### 2. Colored Console
 
 ```python
-# Traditional (100% compatible)
-from logging_metrics import setup_file_logging, LogTimer, LogMetrics
+from logging_metrics import get_logger, create_console_handler
+import logging
 
-# Modular (recommended for new projects)
-from logging_metrics.logger import setup_file_logging
-from logging_metrics.timers import LogTimer
-from logging_metrics.metrics import LogMetrics
+logger = get_logger("app")
+console = create_console_handler(level=logging.INFO, use_colors=True)
+logger.addHandler(console)
 
-# Compatibility (always works)
-from logging_metrics.core import setup_file_logging, LogTimer, LogMetrics
+logger.info("✅ Success")      # Green
+logger.warning("⚠️ Warning")   # Yellow
+logger.error("❌ Error")       # Red
+```
+
+### 3. File Logging with Rotation
+
+```python
+from logging_metrics import setup_file_logging
+
+# Automatic rotation + cleanup
+logger = setup_file_logging(
+    logger_name="my_app",
+    log_dir="./logs",
+    rotation="time",        # Rotate daily
+    backup_count=30         # Keep 30 days
+)
+
+logger.info("Logged to file with auto-rotation!")
+```
+
+**Result:** Creates `./logs/my_app.log` with automatic daily rotation and 30-day retention.
+
+### 4. Time Functions
+
+```python
+from logging_metrics import time_it, get_logger
+
+logger = get_logger("app")
+
+@time_it(logger)
+def process_data(data):
+    # Your code here
+    return result
+
+# Automatically logs execution time
+process_data(my_data)
+```
+
+**Output:**
+```
+2026-02-28 10:30:15 [INFO] app - process_data executed in 1.234s
+```
+
+### 5. Metrics Collection
+
+```python
+from logging_metrics import LogMetrics
+
+metrics = LogMetrics("api")
+
+# Track events
+metrics.increment_counter("requests")
+metrics.set_gauge("active_connections", 42)
+metrics.record_histogram("response_time_ms", 150)
+
+# View metrics
+print(metrics.get_summary())
+```
+
+**Output:**
+```
+Metrics Summary for 'api':
+  Counters:
+    requests: 1
+  Gauges:
+    active_connections: 42
+  Histograms:
+    response_time_ms: count=1, avg=150.00
 ```
 
 ---
 
-## 📋 **API Overview**
+## 📖 Complete Usage Guide
 
-| Name | Module | Type | Description |
-|------|--------|------|-------------|
-| `setup_file_logging` | `logger` | Function | Complete logging setup with file rotation and console |
-| `configure_basic_logging` | `logger` | Function | Simple console logging with colors |
-| `get_logger` | `logger` | Function | Flexible logger creation with custom handlers |
-| `LogTimer` | `timers` | Class | Context manager and decorator for execution timing |
-| `LogMetrics` | `metrics` | Class | Comprehensive metrics collection and logging |
-| `log_spark_dataframe_info` | `logger` | Function | PySpark DataFrame analysis and logging |
-| `ColoredFormatter` | `logger` | Class | ANSI color formatter for console output |
-| `JSONFormatter` | `logger` | Class | JSON formatter for structured logging |
+### 1. Logging
 
-### **Flexible Import Strategy:**
-- **Modular**: `from logging_metrics.logger import setup_file_logging`
-- **Traditional**: `from logging_metrics import setup_file_logging`
-- **Compatibility**: `from logging_metrics.core import setup_file_logging`
+#### 1.1 Basic Logger
+
+```python
+from logging_metrics import get_logger
+import logging
+
+# Create logger with specific level
+logger = get_logger("my_app", level=logging.DEBUG)
+
+# All log levels
+logger.debug("Debug information")
+logger.info("Informational message")
+logger.warning("Warning message")
+logger.error("Error occurred")
+logger.critical("Critical issue!")
+
+# With variables
+user_id = 12345
+logger.info(f"User {user_id} logged in")
+
+# With exception info
+try:
+    risky_operation()
+except Exception as e:
+    logger.error(f"Operation failed: {e}", exc_info=True)
+```
+
+#### 1.2 Colored Console Handler
+
+```python
+from logging_metrics import get_logger, create_console_handler
+import logging
+
+logger = get_logger("app")
+
+# Create colored console handler
+console_handler = create_console_handler(
+    level=logging.INFO,
+    use_colors=True,  # Enable ANSI colors
+    timezone="America/Sao_Paulo"  # Optional: set timezone
+)
+
+logger.addHandler(console_handler)
+
+# Colorful output!
+logger.debug("Debug info")        # Cyan (not shown if level=INFO)
+logger.info("Information")        # Green
+logger.warning("Be careful")      # Yellow
+logger.error("Something wrong")   # Red
+logger.critical("URGENT!")        # Red background + bold
+```
+
+**Console Output (with colors):**
+```
+2026-02-28 10:30:15 [INFO] app - Information        (in green)
+2026-02-28 10:30:16 [WARNING] app - Be careful      (in yellow)
+2026-02-28 10:30:17 [ERROR] app - Something wrong   (in red)
+2026-02-28 10:30:18 [CRITICAL] app - URGENT!        (red bg + white bold)
+```
+
+#### 1.3 JSON Logging (for Log Aggregation)
+
+```python
+from logging_metrics import get_logger, JSONFormatter, create_file_handler
+
+logger = get_logger("api")
+
+# Create JSON formatter
+json_formatter = JSONFormatter()
+
+# Create file handler with JSON
+file_handler = create_file_handler(
+    log_file="./logs/api.json",
+    max_bytes=10485760,  # 10 MB
+    backup_count=5
+)
+file_handler.setFormatter(json_formatter)
+logger.addHandler(file_handler)
+
+# Logs are now in JSON format
+logger.info("User login", extra={"user_id": 123, "ip": "192.168.1.1"})
+```
+
+**Output in `api.json`:**
+```json
+{
+  "timestamp": "2026-02-28T10:30:15.123456",
+  "level": "INFO",
+  "logger": "api",
+  "message": "User login",
+  "user_id": 123,
+  "ip": "192.168.1.1"
+}
+```
+
+#### 1.4 Custom Formatters
+
+```python
+import logging
+from logging_metrics import get_logger, ColoredFormatter
+
+logger = get_logger("app")
+
+# Create custom formatter
+custom_formatter = ColoredFormatter(
+    fmt="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    use_colors=True
+)
+
+# Apply to console handler
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(custom_formatter)
+logger.addHandler(console_handler)
+
+logger.info("Custom formatted message")
+```
+
+**Output:**
+```
+2026-02-28 10:30:15 | INFO     | app | Custom formatted message
+```
 
 ---
 
-## 🚀 Quick Start
+### 2. File Rotation
 
-### **Simple Console Logging**
+#### 2.1 Time-Based Rotation (Recommended for Production)
+
 ```python
-from logging_metrics import configure_basic_logging
+from logging_metrics import create_timed_file_handler, get_logger
+import logging
 
-logger = configure_basic_logging()
-logger.debug("Debug message")     # Gray
-logger.info("Info message")       # Green  
-logger.warning("Warning")         # Yellow
-logger.error("Error occurred")    # Red
-logger.critical("Critical issue") # Bold red
+logger = get_logger("app")
+
+# Daily rotation at midnight
+daily_handler = create_timed_file_handler(
+    log_file="./logs/app.log",
+    when="midnight",      # Rotate at midnight
+    interval=1,           # Every 1 day
+    backup_count=30       # Keep 30 days (RECOMMENDED for production)
+)
+
+logger.addHandler(daily_handler)
+logger.info("Application started")
 ```
 
-### **Production File Logging**
-```python
-from logging_metrics import setup_file_logging, LogTimer
+**What happens:**
+- Creates `app.log` (current log file)
+- At midnight: renames to `app.log.2026-02-28`, creates new `app.log`
+- After 30 days: automatically deletes `app.log.2026-01-29`
 
+**File Structure After 30+ Days:**
+```
+logs/
+├── app.log                    ← Current (today)
+├── app.log.2026-02-27        ← Yesterday
+├── app.log.2026-02-26        ← 2 days ago
+├── ... (28 more files)
+└── app.log.2026-01-29        ← 30 days ago (oldest kept)
+```
+
+#### 2.2 Hourly Rotation (High-Volume Applications)
+
+```python
+hourly_handler = create_timed_file_handler(
+    log_file="./logs/api.log",
+    when="H",           # Hourly rotation
+    interval=1,         # Every 1 hour
+    backup_count=168    # Keep 7 days (24h × 7 = 168)
+)
+```
+
+#### 2.3 Weekly Rotation (Low-Volume Applications)
+
+```python
+weekly_handler = create_timed_file_handler(
+    log_file="./logs/batch.log",
+    when="W0",          # Every Monday (W0-W6 for Mon-Sun)
+    interval=1,
+    backup_count=52     # Keep 1 year (52 weeks)
+)
+```
+
+#### 2.4 Size-Based Rotation (Predictable Disk Usage)
+
+```python
+from logging_metrics import create_file_handler
+
+size_handler = create_file_handler(
+    log_file="./logs/app.log",
+    max_bytes=10485760,    # 10 MB per file
+    backup_count=10        # Keep 10 files = ~100 MB total
+)
+
+logger.addHandler(size_handler)
+```
+
+**What happens:**
+- Creates `app.log`
+- When reaches 10 MB: renames to `app.log.1`, creates new `app.log`
+- When next reaches 10 MB: renames current to `app.log.1`, old `.1` to `.2`
+- After 10 files: deletes `app.log.10` (oldest)
+
+#### 2.5 Combined: Multiple Handlers
+
+```python
+from logging_metrics import get_logger, create_timed_file_handler, create_file_handler
+import logging
+
+logger = get_logger("app")
+
+# General logs: daily rotation
+general_handler = create_timed_file_handler(
+    "./logs/app.log",
+    when="midnight",
+    backup_count=30
+)
+logger.addHandler(general_handler)
+
+# Error logs: size-based, separate file
+error_handler = create_file_handler(
+    "./logs/errors.log",
+    max_bytes=5242880,  # 5 MB
+    backup_count=20
+)
+error_handler.setLevel(logging.ERROR)  # Only errors
+logger.addHandler(error_handler)
+
+# Now:
+logger.info("This goes to app.log")
+logger.error("This goes to BOTH app.log AND errors.log")
+```
+
+#### 2.6 Complete File Logging Setup (One Function)
+
+```python
+from logging_metrics import setup_file_logging
+
+# All-in-one configuration
 logger = setup_file_logging(
     logger_name="my_app",
     log_dir="./logs",
     console_level=logging.INFO,
     level=logging.DEBUG,
-    json_format=True  # For production monitoring
+    rotation="time",        # or "size"
+    backup_count=30,        # Keep 30 days/files
+    json_format=False,      # Set True for JSON
+    timezone="UTC"
 )
 
-logger.info("Application started!")
-
-with LogTimer(logger, "Critical operation"):
-    # Your code here
-    result = perform_complex_operation()
+# Ready to use!
+logger.info("Logging configured!")
 ```
 
-### **Modular Imports (New in v1.0.0)**
-```python
-from logging_metrics.logger import setup_file_logging
-from logging_metrics.timers import LogTimer  
-from logging_metrics.metrics import LogMetrics
-
-logger = setup_file_logging("my_app")
-metrics = LogMetrics(logger)
-
-with metrics.timer('startup'):
-    initialize_application()
-
-metrics.log_all()
+**Creates:**
+```
+logs/
+└── my_app.log (with automatic rotation)
 ```
 
 ---
 
-## 📖 Main Features
+### 3. Timing Functions
 
-### **1. Colored Console Logging**
+#### 3.1 Function Decorator (Simplest)
+
 ```python
-from logging_metrics import configure_basic_logging
+from logging_metrics import time_it, get_logger
 
-logger = configure_basic_logging()
-logger.debug("Debug message")     # Gray
-logger.info("Info")               # Green  
-logger.warning("Warning")         # Yellow
-logger.error("Error")             # Red
-logger.critical("Critical")       # Bold red background
+logger = get_logger("app")
+
+@time_it(logger)
+def fetch_data(url):
+    response = requests.get(url)
+    return response.json()
+
+@time_it(logger, level="DEBUG")  # Custom log level
+def process_item(item):
+    # Processing logic
+    return processed
+
+# Automatically logs execution time
+data = fetch_data("https://api.example.com/data")
+result = process_item(data)
 ```
 
-### **2. Automatic Log Rotation**
-```python
-from logging_metrics import setup_file_logging
-
-# Size-based rotation
-logger = setup_file_logging(
-    logger_name="app",
-    log_dir="./logs",
-    max_bytes=10*1024*1024,  # 10MB
-    backup_count=10,
-    rotation='size'
-)
-
-# Time-based rotation (daily)
-logger = setup_file_logging(
-    logger_name="app", 
-    log_dir="./logs",
-    rotation='time',
-    backup_count=30  # Keep 30 days
-)
+**Output:**
+```
+2026-02-28 10:30:15 [INFO] app - fetch_data executed in 0.523s
+2026-02-28 10:30:16 [DEBUG] app - process_item executed in 0.012s
 ```
 
-### **3. PySpark Integration**
+#### 3.2 Context Manager (More Control)
+
 ```python
-from pyspark.sql import SparkSession
-from logging_metrics import configure_basic_logging, log_spark_dataframe_info
+from logging_metrics import LogTimer, get_logger
 
-spark = SparkSession.builder.getOrCreate()
-df = spark.createDataFrame([(1, "Ana"), (2, "Bruno")], ["id", "name"])
+logger = get_logger("app")
 
-logger = configure_basic_logging()
+# Measure specific code blocks
+def complex_operation():
+    with LogTimer(logger, "Database query"):
+        result = db.query("SELECT * FROM large_table")
+    
+    with LogTimer(logger, "Data transformation"):
+        transformed = transform(result)
+    
+    with LogTimer(logger, "File export"):
+        export_to_file(transformed, "output.csv")
+    
+    return transformed
 
-log_spark_dataframe_info(
-    df=df,
-    logger=logger, 
-    name="users_data",
-    show_schema=True,
-    show_sample=True,
-    sample_rows=5
-)
+complex_operation()
 ```
 
-### **4. Advanced Timing with LogTimer**
-```python
-from logging_metrics import LogTimer, configure_basic_logging
-
-logger = configure_basic_logging()
-
-# As a context manager
-with LogTimer(logger, "Database query"):
-    result = database.execute("SELECT * FROM users")
-
-# As a decorator
-@LogTimer.as_decorator(logger, "Data processing")
-def process_data(data):
-    return data.transform()
-
-# Manual control (new in v1.0.0)
-timer = LogTimer(logger, "Manual operation")
-timer.start()
-# ... perform work ...
-elapsed = timer.stop()
+**Output:**
+```
+2026-02-28 10:30:15 [INFO] app - Database query executed in 2.345s
+2026-02-28 10:30:17 [INFO] app - Data transformation executed in 1.123s
+2026-02-28 10:30:18 [INFO] app - File export executed in 0.456s
 ```
 
-### **5. Comprehensive Metrics Collection**
+#### 3.3 Nested Timing
+
 ```python
-from logging_metrics import LogMetrics, configure_basic_logging
+from logging_metrics import LogTimer, get_logger
 
-logger = configure_basic_logging()
-metrics = LogMetrics(logger)
+logger = get_logger("pipeline")
 
-# Counters
-metrics.increment('requests_processed')
-metrics.increment('errors', 2)
+def data_pipeline():
+    with LogTimer(logger, "Full pipeline"):
+        # Step 1
+        with LogTimer(logger, "  → Extract"):
+            data = extract_data()
+        
+        # Step 2
+        with LogTimer(logger, "  → Transform"):
+            transformed = transform(data)
+        
+        # Step 3
+        with LogTimer(logger, "  → Load"):
+            load_to_db(transformed)
 
-# Values
-metrics.set('current_users', 1250)
-metrics.set('status', 'healthy')
-
-# Timers with context manager
-with metrics.timer('database_operation'):
-    result = database.query("SELECT * FROM users")
-
-# Log everything
-metrics.log_all()
+data_pipeline()
 ```
 
-### **6. Hierarchical Logger Configuration**
+**Output:**
+```
+2026-02-28 10:30:15 [INFO] pipeline -   → Extract executed in 1.234s
+2026-02-28 10:30:16 [INFO] pipeline -   → Transform executed in 2.345s
+2026-02-28 10:30:18 [INFO] pipeline -   → Load executed in 0.567s
+2026-02-28 10:30:19 [INFO] pipeline - Full pipeline executed in 4.146s
+```
+
+#### 3.4 Silent Timing (Return Value)
+
 ```python
-from logging_metrics import setup_file_logging
+from logging_metrics import LogTimer
 import logging
 
-# Main application logger
-main_logger = setup_file_logging("my_app", log_dir="./logs")
+# Measure without logging
+with LogTimer(None, "Silent operation") as timer:
+    # Your code
+    process_data()
 
-# Specialized sub-loggers
-db_logger = logging.getLogger("my_app.database")
-api_logger = logging.getLogger("my_app.api")
-auth_logger = logging.getLogger("my_app.auth")
+# Access elapsed time
+print(f"Processing took {timer.elapsed:.2f} seconds")
 
-# Configure levels per module
-db_logger.setLevel(logging.DEBUG)      # Verbose for database
-api_logger.setLevel(logging.INFO)      # Normal for API
-auth_logger.setLevel(logging.WARNING)  # Only warnings for auth
-
-db_logger.debug("Executing query: SELECT * FROM users")
-api_logger.info("API request processed successfully")
-auth_logger.warning("Failed login attempt from IP: 192.168.1.100")
-```
-
-### **7. JSON Format for Observability**
-```python
-from logging_metrics import setup_file_logging
-
-# JSON logs for ELK Stack, Grafana, etc.
-logger = setup_file_logging(
-    logger_name="microservice",
-    log_dir="./logs",
-    json_format=True
-)
-
-logger.info("User action", extra={
-    "user_id": 12345, 
-    "action": "login",
-    "ip_address": "192.168.1.100",
-    "user_agent": "Mozilla/5.0..."
-})
-
-# Output (formatted for readability):
-# {
-#   "timestamp": "2025-08-16T10:30:00.123Z",
-#   "level": "INFO", 
-#   "name": "microservice",
-#   "message": "User action",
-#   "module": "user_service",
-#   "function": "handle_login",
-#   "line": 45,
-#   "user_id": 12345,
-#   "action": "login",
-#   "ip_address": "192.168.1.100",
-#   "user_agent": "Mozilla/5.0..."
-# }
+# Conditional logging
+if timer.elapsed > 5.0:
+    logger.warning(f"Slow operation: {timer.elapsed:.2f}s")
 ```
 
 ---
 
-## 🆕 **New in v1.0.0**
+### 4. Metrics Collection
 
-### **Enhanced LogMetrics**
+#### 4.1 Counters (Track Events)
+
 ```python
-from logging_metrics.metrics import LogMetrics
+from logging_metrics import LogMetrics
 
-metrics = LogMetrics(logger)
-metrics.increment('requests', 100)
-metrics.set('status', 'healthy')
+metrics = LogMetrics("api")
 
-# 🆕 NEW: Programmatic access
-count = metrics.get_counter('requests')  # Returns 100
-status = metrics.get_value('status', 'unknown')  # Returns 'healthy'
+# Count events
+metrics.increment_counter("requests_total")
+metrics.increment_counter("requests_total")  # Now 2
+metrics.increment_counter("errors_total")
 
-# 🆕 NEW: Check existence
-if metrics.has_metric('requests'):
-    print("Request counter exists")
+# Increment by custom amount
+metrics.increment_counter("bytes_sent", 1024)
 
-# 🆕 NEW: List all metrics
-all_metrics = metrics.list_metrics()
-print(f"Counters: {all_metrics['counters']}")
+# View counters
+print(metrics.get_counter("requests_total"))  # Output: 2
+```
 
-# 🆕 NEW: Get comprehensive summary
+#### 4.2 Gauges (Current Values)
+
+```python
+metrics = LogMetrics("system")
+
+# Set current value
+metrics.set_gauge("active_connections", 42)
+metrics.set_gauge("queue_size", 128)
+metrics.set_gauge("cpu_usage_percent", 75.5)
+
+# Update gauge
+metrics.set_gauge("active_connections", 45)  # Now 45
+
+# Retrieve gauge
+connections = metrics.get_gauge("active_connections")
+print(f"Active connections: {connections}")
+```
+
+#### 4.3 Histograms (Value Distributions)
+
+```python
+metrics = LogMetrics("requests")
+
+# Record values
+metrics.record_histogram("response_time_ms", 120)
+metrics.record_histogram("response_time_ms", 95)
+metrics.record_histogram("response_time_ms", 150)
+metrics.record_histogram("response_time_ms", 105)
+
+# Get statistics
+histogram = metrics.get_histogram("response_time_ms")
+print(f"Count: {histogram['count']}")
+print(f"Average: {histogram['avg']:.2f}ms")
+print(f"Min: {histogram['min']}ms")
+print(f"Max: {histogram['max']}ms")
+print(f"Total: {histogram['sum']}ms")
+```
+
+**Output:**
+```
+Count: 4
+Average: 117.50ms
+Min: 95ms
+Max: 150ms
+Total: 470ms
+```
+
+#### 4.4 Timers (Automatic Timing Metrics)
+
+```python
+from logging_metrics import LogMetrics, get_logger
+
+metrics = LogMetrics("app")
+logger = get_logger("app")
+
+# Start timer
+metrics.start_timer("database_query")
+
+# Do work
+result = db.query("SELECT * FROM users")
+
+# Stop timer (automatically records to histogram)
+metrics.stop_timer("database_query")
+
+# Measure multiple operations
+for i in range(10):
+    metrics.start_timer("api_call")
+    response = api.call()
+    metrics.stop_timer("api_call")
+
+# View statistics
+timer_stats = metrics.get_histogram("api_call")
+logger.info(f"API calls: avg={timer_stats['avg']:.2f}ms")
+```
+
+#### 4.5 Context Manager for Timing
+
+```python
+from logging_metrics import LogMetrics
+
+metrics = LogMetrics("operations")
+
+# Automatic timing
+with metrics.timer("file_processing"):
+    process_large_file("data.csv")
+
+# Timer is automatically recorded
+stats = metrics.get_histogram("file_processing")
+print(f"File processing: {stats['avg']:.2f}s average")
+```
+
+#### 4.6 Complete Metrics Summary
+
+```python
+from logging_metrics import LogMetrics
+
+metrics = LogMetrics("application")
+
+# Track various metrics
+metrics.increment_counter("requests", 1523)
+metrics.increment_counter("errors", 12)
+metrics.set_gauge("active_users", 342)
+metrics.record_histogram("response_time", 125)
+
+# Get comprehensive summary
 summary = metrics.get_summary()
-print(f"Total requests: {summary['counters']['requests']}")
-
-# 🆕 NEW: Reset everything
-metrics.reset()  # Clear all counters, values, and timers
-
-# 🆕 NEW: String representation
-print(metrics)  # LogMetrics(counters=3, values=2, timers=1 [1 completed, 0 active])
+print(summary)
 ```
 
-### **Enhanced LogTimer**
-```python
-from logging_metrics.timers import LogTimer
+**Output:**
+```
+======================================
+Metrics Summary for 'application'
+======================================
 
-timer = LogTimer(logger, "Operation")
+Counters:
+  requests: 1523
+  errors: 12
 
-# 🆕 NEW: Manual control
-timer.start()
-current_time = timer.elapsed()  # Get current elapsed time
-elapsed = timer.stop()
+Gauges:
+  active_users: 342
 
-# 🆕 NEW: String representation
-print(timer)  # LogTimer(operation='Operation', status=running, elapsed=1.234s)
+Histograms:
+  response_time:
+    count: 1
+    sum: 125.00
+    avg: 125.00
+    min: 125.00
+    max: 125.00
+
+======================================
 ```
 
-### **Version Information**
-```python
-from logging_metrics import __version__, get_version, get_version_info
+#### 4.7 Real-World Example: API Monitoring
 
-print(f"Version: {get_version()}")  # "1.0.0"
-major, minor, patch = get_version_info()  # (1, 0, 0)
+```python
+from logging_metrics import LogMetrics, get_logger
+from flask import Flask, request
+import time
+
+app = Flask(__name__)
+metrics = LogMetrics("api")
+logger = get_logger("api")
+
+@app.before_request
+def before_request():
+    request.start_time = time.time()
+    metrics.increment_counter("requests_total")
+    metrics.set_gauge("active_requests", 
+                     metrics.get_gauge("active_requests", 0) + 1)
+
+@app.after_request
+def after_request(response):
+    # Record response time
+    elapsed = (time.time() - request.start_time) * 1000
+    metrics.record_histogram("response_time_ms", elapsed)
+    
+    # Update metrics
+    metrics.set_gauge("active_requests",
+                     metrics.get_gauge("active_requests") - 1)
+    metrics.increment_counter(f"status_{response.status_code}")
+    
+    # Log slow requests
+    if elapsed > 1000:
+        logger.warning(f"Slow request: {request.path} took {elapsed:.0f}ms")
+    
+    return response
+
+@app.route("/metrics")
+def metrics_endpoint():
+    return metrics.get_summary()
+
+# Now you have comprehensive API monitoring!
 ```
 
-### **Context Manager for Metrics**
+---
+
+### 5. PySpark Integration
+
+#### 5.1 Log DataFrame Info
+
 ```python
-# 🆕 NEW: Automatic timing context manager
-with metrics.timer('database_operation'):
-    result = db.query("SELECT * FROM users")
-# Timer automatically started and stopped
+from logging_metrics import log_spark_dataframe_info, get_logger
+from pyspark.sql import SparkSession
+
+logger = get_logger("spark_job")
+spark = SparkSession.builder.getOrCreate()
+
+# Load data
+df = spark.read.parquet("data/users.parquet")
+
+# Log comprehensive DataFrame information
+log_spark_dataframe_info(
+    df=df,
+    logger=logger,
+    df_name="users",
+    show_sample=True,      # Show sample rows
+    sample_rows=5,         # How many rows to show
+    log_level=logging.INFO
+)
+```
+
+**Output:**
+```
+2026-02-28 10:30:15 [INFO] spark_job - DataFrame 'users' Analysis:
+2026-02-28 10:30:15 [INFO] spark_job - Columns: 8
+2026-02-28 10:30:15 [INFO] spark_job - Schema:
+  ├─ user_id (bigint)
+  ├─ name (string)
+  ├─ email (string)
+  ├─ age (int)
+  ├─ city (string)
+  ├─ country (string)
+  ├─ created_at (timestamp)
+  └─ updated_at (timestamp)
+2026-02-28 10:30:15 [INFO] spark_job - Row count: 1,523,842
+2026-02-28 10:30:15 [INFO] spark_job - Partitions: 200
+2026-02-28 10:30:15 [INFO] spark_job - Sample (first 5 rows):
+  +-------+-------------+-------------------+---+----------+---------+-------------------+
+  |user_id|name         |email              |age|city      |country  |created_at         |
+  +-------+-------------+-------------------+---+----------+---------+-------------------+
+  |1      |John Doe     |john@example.com   |32 |São Paulo |Brazil   |2025-01-15 10:30:00|
+  |2      |Jane Smith   |jane@example.com   |28 |New York  |USA      |2025-01-16 11:45:00|
+  ...
+```
+
+#### 5.2 Track Transformations
+
+```python
+from logging_metrics import LogTimer, get_logger
+
+logger = get_logger("etl")
+
+# Time each transformation
+with LogTimer(logger, "Load raw data"):
+    df_raw = spark.read.parquet("data/raw/")
+
+with LogTimer(logger, "Clean data"):
+    df_clean = df_raw.filter(col("age") > 0).dropDuplicates()
+
+with LogTimer(logger, "Aggregate"):
+    df_agg = df_clean.groupBy("country").agg(
+        count("*").alias("user_count"),
+        avg("age").alias("avg_age")
+    )
+
+with LogTimer(logger, "Write results"):
+    df_agg.write.mode("overwrite").parquet("data/output/")
+```
+
+#### 5.3 Monitor Data Quality
+
+```python
+from pyspark.sql.functions import col, count, when
+from logging_metrics import get_logger
+
+logger = get_logger("data_quality")
+
+def check_data_quality(df, name):
+    total_rows = df.count()
+    
+    # Check for nulls
+    for column in df.columns:
+        null_count = df.filter(col(column).isNull()).count()
+        null_pct = (null_count / total_rows) * 100
+        
+        if null_pct > 5:
+            logger.warning(
+                f"{name}.{column}: {null_pct:.2f}% null values ({null_count}/{total_rows})"
+            )
+        else:
+            logger.info(
+                f"{name}.{column}: {null_pct:.2f}% null values ✓"
+            )
+
+# Use it
+check_data_quality(df_users, "users")
+```
+
+---
+
+## 🎨 Advanced Examples
+
+### Complete Application Setup
+
+```python
+"""
+Production-ready logging setup for a web application
+"""
+from logging_metrics import (
+    get_logger,
+    create_console_handler,
+    create_timed_file_handler,
+    create_file_handler,
+    LogMetrics,
+    time_it
+)
+import logging
+
+def setup_logging(app_name="app", log_dir="./logs"):
+    """Setup comprehensive logging for production"""
+    
+    logger = get_logger(app_name, level=logging.DEBUG)
+    
+    # 1. Console handler (for development/debugging)
+    console = create_console_handler(
+        level=logging.INFO,
+        use_colors=True
+    )
+    logger.addHandler(console)
+    
+    # 2. General log file (daily rotation)
+    general_handler = create_timed_file_handler(
+        log_file=f"{log_dir}/{app_name}.log",
+        when="midnight",
+        backup_count=30,  # 30 days retention
+        level=logging.DEBUG
+    )
+    logger.addHandler(general_handler)
+    
+    # 3. Error log file (separate, size-based)
+    error_handler = create_file_handler(
+        log_file=f"{log_dir}/{app_name}_errors.log",
+        max_bytes=10485760,  # 10 MB
+        backup_count=20
+    )
+    error_handler.setLevel(logging.ERROR)
+    logger.addHandler(error_handler)
+    
+    return logger
+
+# Initialize
+logger = setup_logging("my_api")
+metrics = LogMetrics("my_api")
+
+# Use throughout your application
+@time_it(logger)
+def handle_request(request_id):
+    metrics.increment_counter("requests")
+    logger.info(f"Handling request {request_id}")
+    
+    try:
+        result = process_request()
+        metrics.increment_counter("success")
+        return result
+    except Exception as e:
+        metrics.increment_counter("errors")
+        logger.error(f"Request failed: {e}", exc_info=True)
+        raise
+```
+
+### Microservice with Full Observability
+
+```python
+from logging_metrics import get_logger, setup_file_logging, LogMetrics, LogTimer
+from flask import Flask, request, jsonify
+import time
+
+app = Flask(__name__)
+logger = setup_file_logging("api", "./logs", rotation="time", backup_count=30)
+metrics = LogMetrics("api")
+
+@app.before_request
+def start_request():
+    request.start_time = time.time()
+    request.request_id = generate_request_id()
+    
+    logger.info(f"[{request.request_id}] {request.method} {request.path}")
+    metrics.increment_counter("requests_total")
+    metrics.increment_counter(f"requests_{request.method}")
+
+@app.after_request
+def end_request(response):
+    elapsed_ms = (time.time() - request.start_time) * 1000
+    
+    metrics.record_histogram("response_time_ms", elapsed_ms)
+    metrics.increment_counter(f"status_{response.status_code}")
+    
+    logger.info(
+        f"[{request.request_id}] {response.status_code} "
+        f"in {elapsed_ms:.2f}ms"
+    )
+    
+    return response
+
+@app.route("/api/users", methods=["GET"])
+def get_users():
+    with LogTimer(logger, "Database query"):
+        users = db.query("SELECT * FROM users")
+    
+    return jsonify(users)
+
+@app.route("/metrics")
+def metrics_endpoint():
+    return metrics.get_summary()
+
+if __name__ == "__main__":
+    logger.info("Starting API server")
+    app.run()
+```
+
+### ETL Pipeline with Monitoring
+
+```python
+from logging_metrics import get_logger, LogTimer, LogMetrics
+from pyspark.sql import SparkSession
+
+logger = get_logger("etl")
+metrics = LogMetrics("etl")
+
+def run_etl_pipeline():
+    spark = SparkSession.builder.appName("ETL").getOrCreate()
+    
+    logger.info("="*60)
+    logger.info("Starting ETL Pipeline")
+    logger.info("="*60)
+    
+    try:
+        # Extract
+        with LogTimer(logger, "Extract phase") as extract_timer:
+            df_raw = spark.read.parquet("s3://data/raw/")
+            row_count = df_raw.count()
+            logger.info(f"Loaded {row_count:,} rows")
+            metrics.set_gauge("rows_extracted", row_count)
+        
+        # Transform
+        with LogTimer(logger, "Transform phase") as transform_timer:
+            df_clean = (df_raw
+                .filter(col("valid") == True)
+                .dropDuplicates(["id"])
+                .withColumn("processed_at", current_timestamp())
+            )
+            clean_count = df_clean.count()
+            logger.info(f"Cleaned to {clean_count:,} rows")
+            metrics.set_gauge("rows_transformed", clean_count)
+        
+        # Load
+        with LogTimer(logger, "Load phase") as load_timer:
+            df_clean.write.mode("overwrite").parquet("s3://data/processed/")
+            logger.info("Data written successfully")
+        
+        # Summary
+        total_time = (extract_timer.elapsed + 
+                     transform_timer.elapsed + 
+                     load_timer.elapsed)
+        
+        logger.info("="*60)
+        logger.info("ETL Pipeline Completed Successfully")
+        logger.info(f"Total time: {total_time:.2f}s")
+        logger.info(f"Rows processed: {clean_count:,}")
+        logger.info(f"Throughput: {clean_count/total_time:.0f} rows/sec")
+        logger.info("="*60)
+        
+        metrics.increment_counter("pipeline_success")
+        
+    except Exception as e:
+        logger.error(f"ETL Pipeline failed: {e}", exc_info=True)
+        metrics.increment_counter("pipeline_failures")
+        raise
+    
+    finally:
+        spark.stop()
+
+if __name__ == "__main__":
+    run_etl_pipeline()
 ```
 
 ---
 
 ## 🏆 Best Practices
 
-### **1. Configure Logging Once at Startup**
-```python
-# In main.py or __init__.py
-from logging_metrics import setup_file_logging
+### 1. Logger Naming Convention
 
-logger = setup_file_logging(
-    logger_name="my_app", 
-    log_dir="./logs",
-    console_level=logging.INFO,  # Less verbose in console
-    level=logging.DEBUG,         # More detailed in files
-    json_format=True            # For production
+```python
+# ✅ GOOD: Use hierarchical names
+logger = get_logger("myapp.api.users")
+logger = get_logger("myapp.database.connection")
+logger = get_logger("myapp.cache.redis")
+
+# ❌ AVOID: Flat names
+logger = get_logger("users")
+logger = get_logger("db")
+```
+
+**Why?** Hierarchical names allow filtering and level control:
+```python
+# Set different levels for different components
+logging.getLogger("myapp.api").setLevel(logging.INFO)
+logging.getLogger("myapp.database").setLevel(logging.DEBUG)
+```
+
+### 2. Log Rotation Settings
+
+```python
+# ✅ PRODUCTION: Time-based with 30+ day retention
+handler = create_timed_file_handler(
+    "app.log",
+    when="midnight",
+    backup_count=30  # Keep 30 days minimum
 )
-```
 
-### **2. Use Hierarchical Logger Names**
-```python
-# Organize by modules/features
-db_logger = logging.getLogger("myapp.database")
-api_logger = logging.getLogger("myapp.api")
-auth_logger = logging.getLogger("myapp.authentication")
-cache_logger = logging.getLogger("myapp.cache")
-```
-
-### **3. Different Log Levels for Different Outputs**
-```python
-logger = setup_file_logging(
-    logger_name="production_app",
-    console_level=logging.WARNING,  # Only warnings/errors in console
-    level=logging.DEBUG,           # Everything in files
-    add_console=True
+# ✅ HIGH-VOLUME: Size-based with predictable disk usage
+handler = create_file_handler(
+    "app.log",
+    max_bytes=104857600,  # 100 MB
+    backup_count=10       # 10 files = ~1 GB total
 )
+
+# ❌ AVOID: Too few backups
+backup_count=3  # Only 3 days - may lose important logs!
 ```
 
-### **4. Use LogTimer for Performance Critical Operations**
+### 3. Log Levels
+
+Use appropriate log levels:
+
 ```python
-from logging_metrics.timers import LogTimer
+# DEBUG: Detailed diagnostic info (disabled in production)
+logger.debug(f"SQL query: {query}")
+logger.debug(f"Variable state: x={x}, y={y}")
 
-# For database queries
-with LogTimer(logger, "User lookup query"):
-    user = db.query("SELECT * FROM users WHERE id = ?", user_id)
+# INFO: General informational messages
+logger.info("User logged in successfully")
+logger.info("Processing batch 1 of 10")
 
-# For API calls
-@LogTimer.as_decorator(logger, "External API call")
-def fetch_user_data(user_id):
-    return external_api.get_user(user_id)
+# WARNING: Something unexpected but not an error
+logger.warning("API rate limit approaching")
+logger.warning("Cache miss - fetching from database")
+
+# ERROR: An error occurred but application can continue
+logger.error(f"Failed to send email to {user}", exc_info=True)
+logger.error("Database connection lost, retrying...")
+
+# CRITICAL: Serious error, application may not continue
+logger.critical("Out of memory!")
+logger.critical("All database connections failed")
 ```
 
-### **5. Monitor Business Metrics with LogMetrics**
+### 4. Exception Logging
+
 ```python
-from logging_metrics.metrics import LogMetrics
+# ✅ GOOD: Include exception info
+try:
+    risky_operation()
+except Exception as e:
+    logger.error(f"Operation failed: {e}", exc_info=True)
+    # exc_info=True includes full stack trace
 
-metrics = LogMetrics(logger)
+# ✅ GOOD: Specific exceptions
+try:
+    value = int(user_input)
+except ValueError as e:
+    logger.warning(f"Invalid input from user: {user_input}")
+except Exception as e:
+    logger.error(f"Unexpected error: {e}", exc_info=True)
 
-# Track business KPIs
-metrics.increment('daily_signups')
-metrics.increment('successful_payments')
-metrics.set('active_users', get_active_user_count())
-
-# Performance metrics
-with metrics.timer('order_processing'):
-    process_order(order_data)
-
-# Regular reporting
-metrics.log_all()  # Log summary every hour/day
+# ❌ AVOID: Silent failures
+try:
+    risky_operation()
+except:
+    pass  # Never do this!
 ```
 
-### **6. Use Modular Imports for Large Projects**
+### 5. Metrics Naming
+
 ```python
-# config/logging_config.py
-from logging_metrics.logger import setup_file_logging, get_logger
+# ✅ GOOD: Clear, descriptive names with units
+metrics.increment_counter("requests_total")
+metrics.record_histogram("response_time_ms")
+metrics.set_gauge("active_connections_count")
+metrics.record_histogram("payload_size_bytes")
 
-# services/metrics_service.py  
-from logging_metrics.metrics import LogMetrics
+# ❌ AVOID: Ambiguous names
+metrics.increment_counter("count")
+metrics.record_histogram("time")
+metrics.set_gauge("value")
+```
 
-# utils/timing.py
-from logging_metrics.timers import LogTimer
+### 6. Performance Considerations
+
+```python
+# ✅ GOOD: Use lazy formatting
+logger.debug("Processing %s with %d items", name, count)
+
+# ❌ AVOID: Eager string formatting for debug logs
+logger.debug(f"Processing {expensive_operation()} items")
+# expensive_operation() runs even if DEBUG is disabled!
+
+# ✅ GOOD: Check level first for expensive operations
+if logger.isEnabledFor(logging.DEBUG):
+    logger.debug(f"Detailed state: {expensive_dump()}")
+```
+
+### 7. Sensitive Data
+
+```python
+# ❌ NEVER log sensitive data
+logger.info(f"User login: {password}")  # NO!
+logger.info(f"Credit card: {cc_number}")  # NO!
+logger.info(f"API key: {api_key}")  # NO!
+
+# ✅ GOOD: Mask or omit sensitive data
+logger.info(f"User login: {username}")  # OK
+logger.info(f"Card ending: ...{cc_number[-4:]}")  # OK
+logger.info(f"API key: {api_key[:8]}...")  # OK
 ```
 
 ---
 
-## ❌ **Common Pitfalls to Avoid**
+## ❌ Common Pitfalls
 
-### **Don't:**
-- ❌ Configure loggers multiple times in the same application
-- ❌ Use `print()` instead of proper logging
-- ❌ Log sensitive information (passwords, tokens, PII)
-- ❌ Ignore log file rotation (can fill disk space)
-- ❌ Use overly verbose logging in production critical paths
-- ❌ Create loggers without proper naming hierarchy
+### 1. File Rotation Not Working
 
-### **Do:**
-- ✅ Configure logging once at application startup
-- ✅ Use appropriate log levels (DEBUG for development, INFO+ for production)
-- ✅ Implement log rotation to manage disk space
-- ✅ Use structured logging (JSON) for production systems
-- ✅ Monitor log volumes and adjust levels as needed
-- ✅ Use hierarchical logger names for better organization
-
----
-
-## 🔧 Advanced Configuration
-
-### **Complete Production Setup**
+**Problem:**
 ```python
-from logging_metrics import setup_file_logging, LogMetrics
-import logging
+# This creates files with timestamps in the name!
+# 20260228_103015-app.log
+# 20260228_110015-app.log
+# TimedRotatingFileHandler can't recognize these as related!
 
-# Main configuration with all production features
-logger = setup_file_logging(
-    logger_name="production_app",
-    log_dir="/var/log/myapp",
-    level=logging.INFO,                     # File level
-    console_level=logging.WARNING,          # Console level
-    rotation='time',                        # Daily rotation
-    backup_count=30,                        # Keep 30 days
-    json_format=True,                       # Structured logs
-    log_format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    date_format="%Y-%m-%d %H:%M:%S",
-    utc="UTC",                             # Use UTC for production
-    max_bytes=100*1024*1024,               # 100MB max file size
-    add_console=True                        # Console output enabled
-)
-
-# Configure specialized loggers
-modules = ['database', 'api', 'auth', 'cache', 'scheduler']
-for module in modules:
-    module_logger = logging.getLogger(f"production_app.{module}")
-    module_logger.setLevel(logging.INFO)
-
-# Setup application metrics
-metrics = LogMetrics(logger)
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+handler = create_timed_file_handler(f"{timestamp}-app.log")
 ```
 
-### **Development vs Production Configuration**
+**Solution:**
 ```python
-import os
-from logging_metrics import setup_file_logging
-import logging
-
-# Environment-based configuration
-ENV = os.getenv('ENVIRONMENT', 'development')
-
-if ENV == 'production':
-    logger = setup_file_logging(
-        logger_name="myapp",
-        log_dir="/var/log/myapp",
-        level=logging.INFO,
-        console_level=logging.ERROR,
-        json_format=True,
-        rotation='time',
-        backup_count=30
-    )
-elif ENV == 'staging':
-    logger = setup_file_logging(
-        logger_name="myapp",
-        log_dir="./logs",
-        level=logging.DEBUG,
-        console_level=logging.INFO,
-        json_format=True,
-        rotation='size',
-        backup_count=10
-    )
-else:  # development
-    logger = setup_file_logging(
-        logger_name="myapp",
-        log_dir="./logs",
-        level=logging.DEBUG,
-        console_level=logging.DEBUG,
-        json_format=False,  # Human-readable for dev
-        rotation='size',
-        backup_count=3
-    )
+# Use consistent base filename
+handler = create_timed_file_handler("app.log")
+# Creates: app.log, app.log.2026-02-27, app.log.2026-02-26, etc
 ```
 
-### **Custom Formatters and Handlers**
+### 2. Too Many Log Files Accumulated
+
+**Problem:**
 ```python
-from logging_metrics import (
-    ColoredFormatter, 
-    JSONFormatter,
-    create_file_handler,
-    create_console_handler,
-    get_logger
-)
+# Default backup_count is too small!
+handler = create_timed_file_handler("app.log")  # Only keeps 7 days
+```
 
-# Custom formatter for special requirements
-class CustomFormatter(ColoredFormatter):
-    def format(self, record):
-        # Add custom fields
-        record.app_version = "1.0.0"
-        record.environment = os.getenv('ENV', 'dev')
-        return super().format(record)
-
-# Create custom handlers
-file_handler = create_file_handler(
-    log_file="./logs/custom.log",
-    max_bytes=50*1024*1024,
-    backup_count=5,
-    formatter=JSONFormatter()
-)
-
-console_handler = create_console_handler(
-    level=logging.INFO,
-    formatter=CustomFormatter(),
-    use_colors=True
-)
-
-# Create logger with custom handlers
-logger = get_logger(
-    name="custom_app",
-    level=logging.DEBUG,
-    handlers=[file_handler, console_handler],
-    propagate=False
+**Solution:**
+```python
+# Set appropriate retention for production
+handler = create_timed_file_handler(
+    "app.log",
+    backup_count=30  # Keep 30 days minimum
 )
 ```
 
-### **Microservice Configuration with Environment Variables**
+### 3. Logs Not Appearing
+
+**Problem:**
 ```python
-import os
-from logging_metrics import setup_file_logging, LogMetrics
-import logging
+logger = get_logger("app")
+# Forgot to add handler!
+logger.info("This won't appear anywhere")
+```
 
-def get_microservice_config():
-    """Production-ready microservice logging configuration."""
-    return {
-        'service_name': os.getenv('SERVICE_NAME', 'unknown-service'),
-        'environment': os.getenv('ENVIRONMENT', 'development'),
-        'log_level': os.getenv('LOG_LEVEL', 'INFO'),
-        'log_dir': os.getenv('LOG_DIR', './logs'),
-        'json_format': os.getenv('JSON_LOGS', 'true').lower() == 'true',
-        'rotation': os.getenv('LOG_ROTATION', 'time'),
-        'backup_count': int(os.getenv('LOG_BACKUP_COUNT', '30'))
-    }
+**Solution:**
+```python
+logger = get_logger("app")
+console = create_console_handler()
+logger.addHandler(console)
+logger.info("Now it works!")
 
-def setup_microservice_logging():
-    """Configure logging for microservice deployment."""
-    config = get_microservice_config()
-    
-    logger = setup_file_logging(
-        logger_name=config['service_name'],
-        log_dir=config['log_dir'],
-        level=getattr(logging, config['log_level'].upper()),
-        console_level=logging.WARNING if config['environment'] == 'production' else logging.INFO,
-        json_format=config['json_format'],
-        rotation=config['rotation'],
-        backup_count=config['backup_count'],
-        utc="UTC"
-    )
-    
-    # Configure service-specific loggers
-    request_logger = logging.getLogger(f"{config['service_name']}.requests")
-    db_logger = logging.getLogger(f"{config['service_name']}.database")
-    
-    return logger, LogMetrics(logger)
+# Or use all-in-one setup
+logger = setup_file_logging("app", "./logs")
+```
 
-# Usage in Docker/Kubernetes
-logger, metrics = setup_microservice_logging()
+### 4. Duplicate Log Messages
+
+**Problem:**
+```python
+# Adding handlers multiple times
+for i in range(3):
+    logger.addHandler(console_handler)
+# Now every log appears 3 times!
+```
+
+**Solution:**
+```python
+# Check if handler already exists
+if not logger.handlers:
+    logger.addHandler(console_handler)
+
+# Or clear handlers first
+logger.handlers.clear()
+logger.addHandler(console_handler)
+```
+
+### 5. Timing Decorator on Generator
+
+**Problem:**
+```python
+@time_it(logger)
+def generate_items():
+    for i in range(1000):
+        yield i  # Timing only measures generator creation, not execution!
+```
+
+**Solution:**
+```python
+@time_it(logger)
+def generate_and_consume():
+    items = generate_items()
+    return list(items)  # Force evaluation
+
+# Or use manual timing
+with LogTimer(logger, "Generate items"):
+    items = list(generate_items())
 ```
 
 ---
 
-## 🧪 Complete Examples
+## 🔧 Configuration Reference
 
-### **Example 1: Microservice Logging Setup**
+### create_timed_file_handler Parameters
+
 ```python
-from logging_metrics import setup_file_logging, LogMetrics, LogTimer
-import logging
-import os
-from datetime import datetime
-
-def setup_microservice_logging():
-    """Complete microservice logging configuration."""
-    service_name = os.getenv('SERVICE_NAME', 'unknown-service')
-    environment = os.getenv('ENVIRONMENT', 'development')
-    
-    # Main service logger
-    logger = setup_file_logging(
-        logger_name=service_name,
-        log_dir=f"/var/log/{service_name}",
-        level=logging.INFO if environment == 'production' else logging.DEBUG,
-        console_level=logging.WARNING,
-        json_format=True,
-        rotation='time',
-        backup_count=30,
-        utc="UTC"
-    )
-    
-    # Specialized loggers
-    request_logger = logging.getLogger(f"{service_name}.requests")
-    db_logger = logging.getLogger(f"{service_name}.database")
-    external_logger = logging.getLogger(f"{service_name}.external")
-    
-    # Configure levels per component
-    request_logger.setLevel(logging.INFO)
-    db_logger.setLevel(logging.DEBUG if environment != 'production' else logging.INFO)
-    external_logger.setLevel(logging.INFO)
-    
-    # Setup metrics collection
-    metrics = LogMetrics(logger)
-    
-    return logger, metrics
-
-def process_request(request_data):
-    """Example request processing with comprehensive logging."""
-    logger, metrics = setup_microservice_logging()
-    request_id = request_data.get('id', 'unknown')
-    
-    # Log request start
-    logger.info("Processing request", extra={
-        "request_id": request_id,
-        "endpoint": request_data.get('endpoint'),
-        "user_id": request_data.get('user_id'),
-        "timestamp": datetime.utcnow().isoformat()
-    })
-    
-    # Increment request counter
-    metrics.increment('requests_total')
-    metrics.increment(f'requests_{request_data.get("endpoint", "unknown")}')
-    
-    try:
-        with LogTimer(logger, f"Request {request_id}"):
-            # Database operation
-            with metrics.timer('database_query'):
-                db_result = database.query(request_data)
-                metrics.increment('database_queries')
-            
-            # External API call
-            with metrics.timer('external_api'):
-                api_result = external_service.call(db_result)
-                metrics.increment('external_calls')
-            
-            # Update success metrics
-            metrics.increment('requests_successful')
-            metrics.set('last_successful_request', request_id)
-            
-            logger.info("Request completed successfully", extra={
-                "request_id": request_id,
-                "records_processed": len(db_result),
-                "response_size": len(api_result),
-                "success": True
-            })
-            
-            return api_result
-            
-    except Exception as e:
-        # Error handling with metrics
-        metrics.increment('requests_failed')
-        metrics.increment(f'errors_{type(e).__name__}')
-        
-        logger.error("Request failed", extra={
-            "request_id": request_id,
-            "error_type": type(e).__name__,
-            "error_message": str(e),
-            "success": False
-        }, exc_info=True)
-        
-        raise
-    
-    finally:
-        # Log metrics summary periodically
-        if metrics.get_counter('requests_total') % 100 == 0:
-            metrics.log_all()
-```
-
-### **Example 2: Data Processing Pipeline**
-```python
-from logging_metrics import setup_file_logging, LogMetrics, LogTimer
-from logging_metrics import log_spark_dataframe_info
-import logging
-from datetime import datetime
-
-def setup_data_pipeline():
-    """Data processing pipeline with comprehensive monitoring."""
-    
-    # Setup pipeline logging
-    logger = setup_file_logging(
-        logger_name="data_pipeline",
-        log_dir="./logs/pipeline",
-        level=logging.DEBUG,
-        console_level=logging.INFO,
-        json_format=True,
-        rotation='time'
-    )
-    
-    # Component loggers
-    ingestion_logger = logging.getLogger("data_pipeline.ingestion")
-    transform_logger = logging.getLogger("data_pipeline.transform")
-    validation_logger = logging.getLogger("data_pipeline.validation")
-    output_logger = logging.getLogger("data_pipeline.output")
-    
-    # Metrics collection
-    metrics = LogMetrics(logger)
-    
-    return logger, metrics
-
-def process_data_batch(batch_id, source_data):
-    """Process a data batch with full observability."""
-    logger, metrics = setup_data_pipeline()
-    
-    logger.info("Starting batch processing", extra={
-        "batch_id": batch_id,
-        "source_records": len(source_data),
-        "batch_size": len(source_data),
-        "start_time": datetime.utcnow().isoformat()
-    })
-    
-    metrics.set('current_batch_id', batch_id)
-    metrics.set('batch_start_time', datetime.utcnow().isoformat())
-    
-    try:
-        with LogTimer(logger, f"Batch {batch_id} processing"):
-            metrics.start('total_processing_time')
-            
-            # 1. Data Ingestion
-            with metrics.timer('ingestion_time'):
-                logger.info("Starting data ingestion")
-                ingested_data = ingest_data(source_data)
-                metrics.increment('batches_ingested')
-                metrics.set('ingested_records', len(ingested_data))
-                
-                logger.info("Ingestion completed", extra={
-                    "records_ingested": len(ingested_data),
-                    "ingestion_rate": len(ingested_data) / metrics.get_timer_elapsed('ingestion_time'),
-                    "data_quality_score": calculate_quality_score(ingested_data)
-                })
-            
-            # 2. Data Transformation
-            with metrics.timer('transformation_time'):
-                logger.info("Starting data transformation")
-                transformed_data = transform_data(ingested_data)
-                metrics.increment('batches_transformed')
-                metrics.set('transformed_records', len(transformed_data))
-                
-                transformation_ratio = len(transformed_data) / len(ingested_data)
-                metrics.set('transformation_ratio', transformation_ratio)
-                
-                logger.info("Transformation completed", extra={
-                    "records_transformed": len(transformed_data),
-                    "transformation_ratio": transformation_ratio,
-                    "transformation_rate": len(transformed_data) / metrics.get_timer_elapsed('transformation_time')
-                })
-            
-            # 3. Data Validation
-            with metrics.timer('validation_time'):
-                logger.info("Starting data validation")
-                validation_results = validate_data(transformed_data)
-                
-                valid_records = sum(1 for r in validation_results if r['valid'])
-                invalid_records = len(validation_results) - valid_records
-                
-                metrics.set('valid_records', valid_records)
-                metrics.set('invalid_records', invalid_records)
-                metrics.increment('batches_validated')
-                
-                if invalid_records > 0:
-                    logger.warning("Data validation issues found", extra={
-                        "valid_records": valid_records,
-                        "invalid_records": invalid_records,
-                        "validation_success_rate": valid_records / len(validation_results)
-                    })
-                    metrics.increment('validation_warnings')
-            
-            # 4. Output Generation
-            with metrics.timer('output_time'):
-                logger.info("Generating output")
-                output_path = generate_output(transformed_data, batch_id)
-                metrics.increment('batches_completed')
-                metrics.set('output_path', output_path)
-                
-                logger.info("Output generated successfully", extra={
-                    "output_path": output_path,
-                    "output_size": get_file_size(output_path),
-                    "final_record_count": len(transformed_data)
-                })
-            
-            # Final metrics
-            total_time = metrics.stop('total_processing_time')
-            throughput = len(source_data) / total_time
-            
-            metrics.set('batch_throughput', throughput)
-            metrics.set('batch_success', True)
-            
-            logger.info("Batch processing completed successfully", extra={
-                "batch_id": batch_id,
-                "total_processing_time": total_time,
-                "throughput_records_per_second": throughput,
-                "final_status": "success"
-            })
-            
-            # Log comprehensive metrics
-            metrics.log_all()
-            
-            return {
-                "status": "success",
-                "batch_id": batch_id,
-                "records_processed": len(transformed_data),
-                "processing_time": total_time,
-                "output_path": output_path
-            }
-            
-    except Exception as e:
-        # Error handling
-        metrics.increment('batches_failed')
-        metrics.set('batch_success', False)
-        metrics.set('error_type', type(e).__name__)
-        
-        logger.error("Batch processing failed", extra={
-            "batch_id": batch_id,
-            "error_type": type(e).__name__,
-            "error_message": str(e),
-            "processing_stage": get_current_stage()
-        }, exc_info=True)
-        
-        # Still log metrics for analysis
-        metrics.log_all()
-        
-        raise
-    
-    finally:
-        # Cleanup resources
-        cleanup_batch_resources(batch_id)
-```
-
-### **Example 3: Web Application Integration**
-```python
-from flask import Flask, request, g
-from logging_metrics import setup_file_logging, LogMetrics, LogTimer
-import logging
-import time
-import uuid
-
-app = Flask(__name__)
-
-# Setup application logging
-logger = setup_file_logging(
-    logger_name="web_app",
-    log_dir="./logs/webapp",
-    level=logging.INFO,
-    console_level=logging.INFO,
-    json_format=True
+create_timed_file_handler(
+    log_file: str | Path,           # Path to log file
+    when: str = "midnight",         # When to rotate
+    interval: int = 1,              # Rotation interval
+    backup_count: int = 7,          # Number of backups to keep
+    encoding: str = "utf-8",        # File encoding
+    formatter: Formatter = None,    # Custom formatter
+    level: int = logging.DEBUG      # Minimum log level
 )
-
-# Global metrics instance
-metrics = LogMetrics(logger)
-
-def generate_request_id():
-    """Generate unique request ID."""
-    return str(uuid.uuid4())
-
-@app.before_request
-def before_request():
-    """Log request start and setup timing."""
-    g.start_time = time.time()
-    g.request_id = generate_request_id()
-    
-    # Log request start
-    logger.info("Request started", extra={
-        "request_id": g.request_id,
-        "method": request.method,
-        "path": request.path,
-        "user_agent": request.headers.get('User-Agent'),
-        "remote_addr": request.remote_addr,
-        "content_length": request.content_length
-    })
-    
-    # Increment request metrics
-    metrics.increment('http_requests_total')
-    metrics.increment(f'http_requests_{request.method.lower()}')
-
-@app.after_request
-def after_request(response):
-    """Log request completion and metrics."""
-    duration = time.time() - g.start_time
-    
-    # Log request completion
-    logger.info("Request completed", extra={
-        "request_id": g.request_id,
-        "status_code": response.status_code,
-        "duration_ms": duration * 1000,
-        "response_size": len(response.get_data())
-    })
-    
-    # Update metrics
-    metrics.increment(f'http_responses_{response.status_code}')
-    if response.status_code >= 400:
-        metrics.increment('http_errors_total')
-    
-    # Track response times
-    metrics.set('last_request_duration', duration)
-    
-    return response
-
-@app.route('/api/users')
-def get_users():
-    """Example API endpoint with comprehensive logging."""
-    with LogTimer(logger, f"GET /api/users - {g.request_id}"):
-        try:
-            # Database query
-            with metrics.timer('database_query'):
-                users = database.get_all_users()
-                metrics.increment('database_queries')
-            
-            # Business logic
-            with metrics.timer('user_processing'):
-                processed_users = process_users(users)
-                metrics.set('active_users_count', len(processed_users))
-            
-            logger.info("Users retrieved successfully", extra={
-                "request_id": g.request_id,
-                "user_count": len(processed_users),
-                "query_time": metrics.get_timer_elapsed('database_query')
-            })
-            
-            return {"users": processed_users, "count": len(processed_users)}
-            
-        except Exception as e:
-            logger.error("Failed to retrieve users", extra={
-                "request_id": g.request_id,
-                "error_type": type(e).__name__,
-                "error_message": str(e)
-            }, exc_info=True)
-            
-            metrics.increment('api_errors')
-            raise
-
-# Metrics endpoint for monitoring
-@app.route('/metrics')
-def get_metrics():
-    """Endpoint to expose application metrics."""
-    summary = metrics.get_summary()
-    return {
-        "counters": summary["counters"],
-        "values": summary["values"],
-        "completed_timers": summary["completed_timers"],
-        "timestamp": time.time()
-    }
-
-# Health check endpoint
-@app.route('/health')
-def health_check():
-    """Health check endpoint."""
-    logger.info("Health check requested", extra={"request_id": g.request_id})
-    return {"status": "healthy", "timestamp": time.time()}
-
-if __name__ == '__main__':
-    # Log metrics summary every 5 minutes
-    import threading
-    
-    def periodic_metrics():
-        while True:
-            time.sleep(300)  # 5 minutes
-            metrics.log_all()
-    
-    metrics_thread = threading.Thread(target=periodic_metrics, daemon=True)
-    metrics_thread.start()
-    
-    logger.info("Web application starting")
-    app.run(debug=False, host='0.0.0.0', port=5000)
 ```
 
----
+**`when` options:**
+- `"S"` - Seconds
+- `"M"` - Minutes
+- `"H"` - Hours
+- `"D"` - Days
+- `"midnight"` - Rotate at midnight (recommended)
+- `"W0"` to `"W6"` - Specific weekday (0=Monday, 6=Sunday)
 
-## 🧪 Testing
-
-The library includes a comprehensive test suite to ensure quality and reliability.
-
-### **Running Tests**
-```bash
-# Install development dependencies
-pip install -e ".[dev]"
-
-# Run all tests
-make test
-
-# Run with coverage
-make test-cov
-
-# Run specific test categories
-make test-unit        # Unit tests only
-make test-integration # Integration tests only
-pytest -m spark       # Spark-specific tests
-```
-
-### **Test Structure**
-```
-test/
-├── conftest.py                 # Pytest configuration and fixtures
-├── pytest.ini                 # Test settings and markers
-├── test-requirements.txt       # Test dependencies
-├── test_logger.py              # Comprehensive test suite for the logger module
-├── test_metrics.py             # Comprehensive test suite for the metrics module
-├── test_timers.py              # Comprehensive test suite for the timers module
-└── TEST_GUIDE.md              # Testing documentation
-```
-
-### **Test Categories**
-- **Unit Tests**: Individual function and class testing
-- **Integration Tests**: End-to-end workflow testing  
-- **Error Tests**: Error handling and edge cases
-- **Performance Tests**: Timing and overhead validation
-- **Spark Tests**: PySpark integration (when available)
-
-### **Writing Tests with pytest Integration**
-```python
-import pytest
-from logging_metrics import get_logger, LogMetrics
-
-def test_my_application_feature(caplog):
-    """Test with logging-metrics and pytest caplog."""
-    # Use caplog-friendly logger
-    logger = get_logger("test_app", caplog_friendly=True)
-    metrics = LogMetrics(logger)
-    
-    # Your test code
-    with caplog.at_level(logging.INFO):
-        my_application_function(logger, metrics)
-    
-    # Verify logging
-    assert "Expected message" in caplog.text
-    assert metrics.get_counter('test_counter') == 1
-
-def test_timing_operations(caplog):
-    """Test timing functionality."""
-    logger = get_logger("timing_test", caplog_friendly=True)
-    
-    with caplog.at_level(logging.INFO):
-        with LogTimer(logger, "Test operation"):
-            time.sleep(0.01)
-    
-    messages = [record.getMessage() for record in caplog.records]
-    assert any("Starting: Test operation" in msg for msg in messages)
-    assert any("Completed: Test operation" in msg for msg in messages)
-```
-
----
-
-## ⚙️ CI/CD
-
-This project uses **GitHub Actions** for continuous integration and automated publishing.
-
-### **CI Workflow** (`ci.yml`)
-- **Triggers**: Push and PR to `main`/`master`
-- **Python Versions**: 3.9, 3.10, 3.11, 3.12
-- **Steps**:
-  1. Install dependencies and package in editable mode
-  2. Run code quality checks (ruff, black, mypy)
-  3. Execute comprehensive test suite with coverage
-  4. Enforce minimum 85% coverage threshold
-  5. Upload coverage reports to Codecov
-
-### **CD Workflow** (`publish-to-pypi.yml`)
-- **Triggers**: Version tags (`v*.*.*`)
-- **Steps**:
-  1. Build wheel and source distribution
-  2. Validate package integrity
-  3. Verify tag matches `pyproject.toml` version
-  4. Publish to PyPI via OIDC (secure, no tokens needed)
-
-### **Running CI Locally**
-```bash
-# Full CI pipeline
-make test-ci
-
-# Individual steps
-make install     # Install dependencies
-make test-cov    # Tests with coverage
-make lint        # Code quality checks
-make format      # Code formatting
-```
-
-### **Release Process**
-```bash
-# 1. Update version in pyproject.toml
-# 2. Update CHANGELOG.md
-# 3. Create and push tag
-git add .
-git commit -m "release: v1.0.0"
-git tag -a v1.0.0 -m "release: v1.0.0 - Production Ready"
-git push origin v1.0.0
-
-# GitHub Actions automatically:
-# - Builds the package
-# - Runs all tests
-# - Publishes to PyPI
-```
-
----
-
-## 🔧 Requirements
-
-### **Runtime Requirements**
-- **Python**: >= 3.9
-- **Dependencies**: 
-  - `pytz>=2023.3,<2025.0` (timezone support)
-
-### **Optional Dependencies**
-- **PySpark**: `pyspark>=3.3.0,<5.0.0` (for DataFrame integration)
-
-### **Development Requirements**
-- **Testing**: `pytest>=7.0.0`, `pytest-cov>=4.0.0`
-- **Code Quality**: `black>=22.0.0`, `ruff>=0.1.0`, `mypy>=1.0.0`
-- **Type Checking**: Full type hints included
-
-### **System Requirements**
-- **File System**: Write permissions for log directories
-- **Memory**: Minimal overhead (< 1MB base usage)
-- **Performance**: < 1ms overhead per log operation
-
----
-
-## 📝 Changelog
-
-### **v1.0.0 (Current) - Production Ready** 🎉
-- ✨ **Formal Public API**: Defined with comprehensive documentation
-- 🛡️ **Robust Error Handling**: Input validation and meaningful error messages
-- 🏗️ **Modular Structure**: Better organization with backward compatibility
-- 📚 **Complete Documentation**: Google-style docstrings and type hints
-- 🆕 **Enhanced LogMetrics**: New methods for programmatic access
-- ⚡ **Enhanced LogTimer**: Manual control and better error handling
-- 🔢 **Version Information**: `__version__`, `get_version()` functions
-- 🧪 **Comprehensive Tests**: 85%+ coverage with edge cases
-- 📦 **Stable Dependencies**: Pinned version ranges for reliability
-
-### **v0.2.3 (Previous)**
-- Initial stable version with core functionality
-- `LogTimer` and `LogMetrics` basic implementation
-- Spark integration and colored logs
-- JSON format support and file rotation
-
-**[View Full Changelog](https://github.com/ThaissaTeodoro/CHANGELOG.md)**
-
----
-
-## 🔄 **Migration Guide**
-
-### **From v0.x.x to v1.0.0**
-
-**✅ No Breaking Changes**: Your existing code will continue to work exactly as before!
+### create_file_handler Parameters
 
 ```python
-# Your existing code (still works perfectly):
-from logging_metrics import setup_file_logging, LogTimer, LogMetrics
+create_file_handler(
+    log_file: str | Path,           # Path to log file
+    max_bytes: int = 10485760,      # Max file size (10 MB default)
+    backup_count: int = 5,          # Number of backups
+    encoding: str = "utf-8",        # File encoding
+    formatter: Formatter = None,    # Custom formatter
+    level: int = logging.DEBUG      # Minimum log level
+)
+```
 
-# Optional: New modular structure (for better organization):
-from logging_metrics.logger import setup_file_logging
+### setup_file_logging Parameters
+
+```python
+setup_file_logging(
+    logger_name: str,               # Logger name
+    log_dir: str = "./logs",        # Log directory
+    console_level: int = logging.INFO,     # Console log level
+    level: int = logging.DEBUG,     # File log level
+    rotation: str = "time",         # "time" or "size"
+    backup_count: int = 5,          # Backups to keep
+    json_format: bool = False,      # Use JSON format
+    timezone: str = "UTC"           # Timezone for timestamps
+)
+```
+
+---
+
+## 🆕 What's New in v1.0.0
+
+### ✨ New Features
+
+1. **Modular imports**: Import only what you need
+```python
+from logging_metrics.logger import get_logger
 from logging_metrics.timers import LogTimer
 from logging_metrics.metrics import LogMetrics
-
-# New v1.0.0 features you can optionally use:
-metrics = LogMetrics(logger)
-summary = metrics.get_summary()  # Programmatic access
-metrics.reset()                  # Clear all metrics
-count = metrics.get_counter('requests')  # Get current value
 ```
 
-**📖 Detailed Migration Information**: [MIGRATION_GUIDE.md](https://github.com/ThaissaTeodoro/MIGRATION_GUIDE.md)
+2. **Enhanced error handling**: All functions now have proper error handling and validation
+
+3. **Type hints**: Full type annotation support for better IDE integration
+
+4. **Improved documentation**: Comprehensive docstrings and examples
+
+### 🔄 API Changes (Backward Compatible)
+
+All existing code continues to work:
+```python
+# v0.x.x (still works)
+from logging_metrics import get_logger, time_it, LogMetrics
+
+# v1.0.0 (new, optional)
+from logging_metrics.logger import get_logger
+from logging_metrics.timers import time_it
+from logging_metrics.metrics import LogMetrics
+```
+
+### 🐛 Bug Fixes
+
+1. Fixed timestamp in log filenames preventing rotation (see issue #12)
+2. Improved timezone handling in formatters
+3. Fixed metrics serialization for Prometheus export
+
+---
+
+## 🔄 Migration Guide
+
+### Upgrading from v0.x.x to v1.0.0
+
+**Good news: No code changes required!** v1.0.0 is 100% backward compatible.
+
+#### Optional: Use New Modular Structure
+
+```python
+# Old (still works)
+from logging_metrics import get_logger, LogTimer, LogMetrics
+
+# New (optional, more explicit)
+from logging_metrics.logger import get_logger, setup_file_logging
+from logging_metrics.timers import LogTimer, time_it
+from logging_metrics.metrics import LogMetrics
+```
+
+#### Update Dependencies
+
+```bash
+pip install --upgrade logging-metrics
+```
+
+#### Review Log File Names
+
+If you were using `setup_file_logging()`, check your log files:
+
+**Before v1.0.0:**
+```
+logs/20260228_103015-app.log
+logs/20260227_093000-app.log
+```
+
+**After v1.0.0:**
+```
+logs/app.log
+logs/app.log.2026-02-27
+```
+
+**Action:** Clean up old log files with timestamps in names (see cleanup script in troubleshooting section).
+
+---
+
+## 🐛 Troubleshooting
+
+### Log Files Not Rotating
+
+**Symptom:** Files accumulate with timestamps in names (e.g., `20260228_app.log`)
+
+**Cause:** Old version created files with timestamps preventing rotation
+
+**Solution:**
+```bash
+# Clean up old files
+cd logs/
+rm 202*-*.log
+
+# Update library
+pip install --upgrade logging-metrics
+
+# New files will rotate correctly
+```
+
+### Disk Space Issues
+
+**Symptom:** Log directory consuming too much disk space
+
+**Solution:**
+```python
+# Increase backup_count (more retention)
+handler = create_timed_file_handler(
+    "app.log",
+    backup_count=30  # Instead of default 7
+)
+
+# Or use size-based rotation for predictable usage
+handler = create_file_handler(
+    "app.log",
+    max_bytes=104857600,  # 100 MB per file
+    backup_count=10       # 10 files = ~1 GB total
+)
+```
+
+### Colors Not Showing in Console
+
+**Symptom:** ANSI escape codes visible instead of colors
+
+**Cause:** Terminal doesn't support ANSI colors or colors disabled
+
+**Solution:**
+```python
+# Disable colors
+console = create_console_handler(use_colors=False)
+
+# Or check terminal support
+import sys
+if sys.stdout.isatty():
+    console = create_console_handler(use_colors=True)
+else:
+    console = create_console_handler(use_colors=False)
+```
+
+### Metrics Not Accumulating
+
+**Symptom:** Metrics reset or don't accumulate as expected
+
+**Cause:** Creating new `LogMetrics` instance each time
+
+**Solution:**
+```python
+# ❌ WRONG: New instance each time
+def handle_request():
+    metrics = LogMetrics("api")  # Creates new instance!
+    metrics.increment_counter("requests")
+
+# ✅ CORRECT: Reuse same instance
+metrics = LogMetrics("api")  # Create once
+
+def handle_request():
+    metrics.increment_counter("requests")  # Reuse
+```
+
+### Permission Denied on Log Files
+
+**Symptom:** `PermissionError: [Errno 13] Permission denied: './logs/app.log'`
+
+**Solution:**
+```bash
+# Check directory permissions
+chmod 755 ./logs
+
+# Or specify user-writable location
+handler = create_timed_file_handler(
+    "~/.local/share/myapp/app.log",  # User home
+    # or
+    "/tmp/myapp/app.log"  # Temp directory
+)
+```
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how to get started:
+We welcome contributions! Here's how:
 
-### **Development Setup**
+### Development Setup
+
 ```bash
 # Clone repository
 git clone https://github.com/ThaissaTeodoro/logging-metrics.git
 cd logging-metrics
 
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Install in development mode
 pip install -e ".[dev]"
 
-# Run tests to verify setup
-make test
+# Run tests
+pytest
+
+# Run linting
+flake8 src/
+black src/ --check
+
+# Run type checking
+mypy src/
 ```
 
-### **Contribution Process**
-1. **Fork** the project
-2. **Create** your feature branch (`git checkout -b feature/amazing-feature`)
-3. **Write** tests for your changes
-4. **Run** the test suite (`make test-ci`)
-5. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-6. **Push** to your branch (`git push origin feature/amazing-feature`)
-7. **Open** a Pull Request
+### Submitting Changes
 
-### **Development Standards**
-- **Tests Required**: All new features must include tests
-- **Documentation**: Update docstrings and README as needed
-- **Code Quality**: Must pass `make test-ci` (formatting, linting, tests)
-- **Type Hints**: All public APIs must include type annotations
-- **Backward Compatibility**: No breaking changes without major version bump
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/my-feature`
+3. **Make your changes** with tests
+4. **Run tests**: `pytest`
+5. **Run linters**: `black src/ && flake8 src/`
+6. **Commit**: `git commit -m "Add my feature"`
+7. **Push**: `git push origin feature/my-feature`
+8. **Create Pull Request**
 
-### **Reporting Issues**
-- **Bug Reports**: [GitHub Issues](https://github.com/ThaissaTeodoro/logging-metrics/issues)
-- **Feature Requests**: Include use case and examples
-- **Security Issues**: Email maintainer directly for sensitive issues
+### Guidelines
+
+- Add tests for new features
+- Update documentation
+- Follow PEP 8 style guide
+- Add type hints
+- Include docstrings
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](https://github.com/ThaissaTeodoro/LICENSE) file for details.
-
-### **Quick Summary**
-- ✅ **Commercial Use**: Can be used in commercial applications
-- ✅ **Modification**: Can be modified and distributed
-- ✅ **Distribution**: Can be distributed freely
-- ✅ **Private Use**: Can be used privately
-- ⚠️ **Liability**: No warranty provided
-- 📋 **Attribution**: Must include original license
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🌟 **Star History**
+## 🙏 Acknowledgments
 
-If this library helped you, please consider giving it a ⭐ on GitHub!
-
-[![Star History](https://img.shields.io/github/stars/ThaissaTeodoro/logging-metrics?style=social)](https://github.com/ThaissaTeodoro/logging-metrics)
-
----
-
-## 📞 **Support & Community**
-
-- **📖 Documentation**: Complete examples in this README
-- **🐛 Issues**: [GitHub Issues](https://github.com/ThaissaTeodoro/logging-metrics/issues)
-- **🔄 Migration Help**: [Migration Guide](https://github.com/ThaissaTeodoro/logging-metrics/MIGRATION_GUIDE.md)
-- **📧 Contact**: [thaissa.teodoro@hotmail.com](mailto:thaissa.teodoro@hotmail.com)
+- Built with ❤️ by [Thaissa Teodoro](https://github.com/ThaissaTeodoro)
+- Inspired by Python's standard `logging` module
+- Metrics design inspired by Prometheus
 
 ---
 
-## 🚀 **Ready to Get Started?**
+## 📞 Support
 
-```bash
-# Install the library
-pip install logging-metrics
+- **Issues**: [GitHub Issues](https://github.com/ThaissaTeodoro/logging-metrics/issues)
+- **Documentation**: [Full API Reference](https://logging-metrics.readthedocs.io/)
+- **PyPI**: [logging-metrics](https://pypi.org/project/logging-metrics/)
 
-# Start with simple console logging
-from logging_metrics import configure_basic_logging
-logger = configure_basic_logging()
-logger.info("Welcome to logging-metrics v1.0.0! 🎉")
+---
 
-# Or jump into production setup
+## 📊 Quick Reference Card
+
+```python
+# === LOGGING ===
+from logging_metrics import get_logger, create_console_handler
+
+logger = get_logger("app")
+console = create_console_handler(use_colors=True)
+logger.addHandler(console)
+
+logger.debug("Debug")      # Cyan
+logger.info("Info")        # Green
+logger.warning("Warning")  # Yellow
+logger.error("Error")      # Red
+
+# === FILE ROTATION ===
+from logging_metrics import create_timed_file_handler
+
+handler = create_timed_file_handler(
+    "app.log",
+    when="midnight",
+    backup_count=30
+)
+logger.addHandler(handler)
+
+# === TIMING ===
+from logging_metrics import time_it, LogTimer
+
+@time_it(logger)
+def my_function():
+    pass
+
+with LogTimer(logger, "Operation"):
+    # code here
+    pass
+
+# === METRICS ===
+from logging_metrics import LogMetrics
+
+metrics = LogMetrics("app")
+metrics.increment_counter("requests")
+metrics.set_gauge("connections", 42)
+metrics.record_histogram("latency_ms", 150)
+print(metrics.get_summary())
+
+# === ALL-IN-ONE ===
 from logging_metrics import setup_file_logging
-logger = setup_file_logging("myapp", log_dir="./logs", json_format=True)
-logger.info("Production logging ready!")
+
+logger = setup_file_logging(
+    "app",
+    log_dir="./logs",
+    rotation="time",
+    backup_count=30
+)
 ```
 
-**Happy Logging!** 🎯
-
 ---
 
-*Made with ❤️ for the Python community. Star ⭐ this repo if it helped you!*
+**Made with ❤️ for Python developers who care about observability** 🚀
+

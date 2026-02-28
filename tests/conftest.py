@@ -1,14 +1,13 @@
-import tempfile
-import pytest
 import shutil
+import tempfile
 
+import pytest
 
 @pytest.fixture
 def tmp_log_dir():
     d = tempfile.mkdtemp()
     yield d
     shutil.rmtree(d)
-
 
 # Mock logger
 class MockLogger:
@@ -29,12 +28,10 @@ class MockLogger:
     def error(self, msg):
         self.error_calls.append(msg)
 
-
 @pytest.fixture
 def mock_logger():
     """Fixture that provides a mock logger."""
     return MockLogger()
-
 
 # Clean SparkContext (enforces GC to not "leak" memory in many tests)
 @pytest.fixture(autouse=True)
@@ -43,7 +40,6 @@ def cleanup_spark_context():
     import gc
 
     gc.collect()
-
 
 def pytest_collection_modifyitems(config, items):
     """

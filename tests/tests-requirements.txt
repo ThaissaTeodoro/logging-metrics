@@ -20,3 +20,5 @@ hypothesis>=6.0.0  # For property-based testing
 # Formatting and linting (optional)
 black>=22.0.0
 flake8>=5.0.0
+ruff>=0.1.0
+mypy>=1.0.0

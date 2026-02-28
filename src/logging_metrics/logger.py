@@ -793,13 +793,12 @@ def setup_file_logging(
         # Create timezone converter
         timezone_converter = _make_timezone_converter(utc)
 
-        # Generate timestamped filename
-        utc_tz = pytz.timezone(utc)
-        timestamp = datetime.now(utc_tz).strftime("%Y%m%d_%H%M%S")
-
         # Choose file extension based on format
         extension = "json" if json_format else "log"
-        log_file = full_log_dir / f"{timestamp}-{file_prefix}.{extension}"
+
+        # Use simple filename WITHOUT timestamp for proper rotation
+        # TimedRotatingFileHandler needs a consistent base filename to work correctly
+        log_file = full_log_dir / f"{file_prefix}.{extension}"
 
     except Exception as e:
         raise ValueError(f"Failed to setup log file path: {e}")
