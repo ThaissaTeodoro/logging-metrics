@@ -5,7 +5,7 @@ PIP := $(PYTHON) -m pip
 PYTEST := $(PYTHON) -m pytest
 
 PKG := logging_metrics 
-TESTS := tests             
+TESTS := test
 
 
 RED := \033[0;31m
@@ -21,7 +21,7 @@ help:
 install:
 	@echo "$(YELLOW)Installing dependencies...$(NC)"
 	$(PIP) install -U pip
-	$(PIP) install -r tests/tests-requirements.txt
+	$(PIP) install -r tests/test-requirement.txt.txt
 	$(PIP) install -e .
 
 test: 
