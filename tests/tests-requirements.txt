@@ -9,6 +9,7 @@ pytest-mock>=3.10.0  # Para mocking
 # Testing framework
 pyspark>=3.3.0
 py4j>=0.10.9
+pandas>=2.2.0
 
 # For coverage analysis
 coverage>=6.0.0
