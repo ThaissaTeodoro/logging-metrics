@@ -21,7 +21,7 @@ help:
 install:
 	@echo "$(YELLOW)Installing dependencies...$(NC)"
 	$(PIP) install -U pip
-	$(PIP) install -r tests/test-requirement.txt.txt
+	$(PIP) install -r tests/test-requirement.txt
 	$(PIP) install -e .
 
 test: 
