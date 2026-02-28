@@ -8,7 +8,7 @@ import sys
 
 import pytest
 
-from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 
 from logging_metrics.core import (
     ColoredFormatter,
@@ -1454,7 +1454,7 @@ def test_get_logger_exception_during_configuration():
 
 
 # 7. Fix Spark DataFrame tests - patch io.StringIO correctly
-class TestSparkDataFrameLoggingEdgeCases:
+class TestSparkDataFrameLoggingEdgeCases2:
 
     def test_log_spark_dataframe_info_printschema_error(self):
         """Test printSchema method error handling."""
