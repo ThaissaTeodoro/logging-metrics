@@ -66,7 +66,7 @@ __all__ = [
     "LogTimer",
     # Metrics module
     "LogMetrics",
-    "TimerContext",
+    "TimerContext"
 ]
 
 

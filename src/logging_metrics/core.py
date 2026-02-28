@@ -25,6 +25,7 @@ from .logger import (
     get_logger,
     log_spark_dataframe_info,
     setup_file_logging,
+    _make_timezone_converter
 )
 from .metrics import LogMetrics, TimerContext
 from .timers import LogTimer
@@ -42,9 +43,8 @@ __all__ = [
     "get_logger",
     "setup_file_logging",
     "log_spark_dataframe_info",
-    # Timer functionality
     "LogTimer",
-    # Metrics functionality
     "LogMetrics",
     "TimerContext",
+    "_make_timezone_converter"
 ]

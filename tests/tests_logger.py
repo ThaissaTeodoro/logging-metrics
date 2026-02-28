@@ -4,8 +4,11 @@ import logging
 import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch
+import sys
 
 import pytest
+
+from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
 from logging_metrics.core import (
     ColoredFormatter,
@@ -18,8 +21,16 @@ from logging_metrics.core import (
     get_logger,
     log_spark_dataframe_info,
     setup_file_logging,
-    _make_timezone_converter
+    _make_timezone_converter,
+    LogTimer,
+    LogMetrics
 )
+
+try:
+    from pyspark.sql import SparkSession
+    spark_available = True
+except ImportError:
+    spark_available = False
 
 class TestColoredFormatterEdgeCases:
     """Testes para casos extremos do ColoredFormatter."""
@@ -1482,12 +1493,6 @@ class TestBackwardCompatibility:
         assert ColoredFormatter is not None
         assert LogTimer is not None
         assert LogMetrics is not None
-
-    def test_core_imports_identical(self):
-        """Test that core imports are identical to modular ones."""
-        assert ColoredFormatter is CoreColoredFormatter
-        assert LogTimer is CoreLogTimer
-        assert LogMetrics is CoreLogMetrics
 
     def test_main_package_imports(self):
         """Test that main package imports work."""

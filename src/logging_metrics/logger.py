@@ -30,6 +30,7 @@ __all__ = [
     "get_logger",
     "setup_file_logging",
     "log_spark_dataframe_info",
+    "_make_timezone_converter"
 ]
 
 
